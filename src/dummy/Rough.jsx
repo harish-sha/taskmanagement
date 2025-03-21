@@ -1,227 +1,78 @@
-import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import { IoSearch } from "react-icons/io5";
-import { BsJournalArrowDown } from "react-icons/bs";
-import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
-import UniversalDatePicker from "../../whatsapp/components/UniversalDatePicker";
-import InputField from "../../components/layout/InputField";
-import AnimatedDropdown from "../../whatsapp/components/AnimatedDropdown";
-import UniversalButton from "../../whatsapp/components/UniversalButton";
-// import TransactionsHistoryTable from "./components/TransactionsHistoryTable";
-import TransactionsSummaryTable from "./components/TransactionsSummaryTable";
-import { MultiSelect } from "primereact/multiselect";
-import CustomTooltip from "../../components/common/CustomTooltip";
-import { AiOutlineInfoCircle } from "react-icons/ai";
-import UniversalSkeleton from "../../whatsapp/components/UniversalSkeleton";
-import { fetchTransactions } from "../../apis/settings/setting";
-import { DataTable } from "../../components/layout/DataTable";
+import Sidebar from '../components/common/Sidebar';
+import TaskTable from '../components/common/TaskTable';
+import DashboardChart from '../components/common/DashboardChart';
+import CalendarComponent from '../components/common/CalendarComponent';
 
-const Transactions = () => {
-  const [isFetching, setIsFetching] = useState(false);
-  const [filterData, setFilterData] = useState({
-    rechargeType: 0,
-    toDate: new Date().toLocaleDateString("en-GB"),
-    startDate: new Date().toLocaleDateString("en-GB"),
-  });
-  const [transactionalData, setTransactionalData] = useState([]);
+// Placeholder UI Concept - Modern Admin Dashboard Structure
+// Use this as a base to build a beautiful, scalable dashboard
 
-  const handleSearch = async () => {
-    try {
-      setIsFetching(true)
-      const res = await fetchTransactions(filterData);
-      setTransactionalData(res);
-    }
-    catch (e) {
-      toast.error("Something went wring!")
-    }
-    finally {
-      setIsFetching(false)
-    }
-  };
+import React from "react";
+import { FaTasks, FaUsers, FaChartLine, FaBell, FaUserShield, FaMoon } from "react-icons/fa";
 
-  useEffect(() => {
-    handleSearch();
-  }, []);
-
-  const columns = [
-    { field: "sn", headerName: "S.No", flex: 0, minWidth: 80 },
-    { field: "user", headerName: "UserName", flex: 1, minWidth: 120 },
-    {
-      field: "rechargeDate",
-      headerName: "Recharge Data",
-      flex: 1,
-      minWidth: 120,
-    },
-    {
-      field: "before",
-      headerName: "Amount Before Recharge",
-      flex: 1,
-      minWidth: 120,
-    },
-    {
-      field: "amount",
-      headerName: "Amount Recharged",
-      flex: 1,
-      minWidth: 120,
-    },
-    {
-      field: "after",
-      headerName: "Amount After Recharge",
-      flex: 1,
-      minWidth: 120,
-    },
-    {
-      field: "type",
-      headerName: "Recharge Type",
-      flex: 1,
-      minWidth: 120,
-    },
-    {
-      field: "gst",
-      headerName: "Gst Amount",
-      flex: 1,
-      minWidth: 120,
-    },
-    {
-      field: "balance",
-      headerName: "Total Amount",
-      flex: 1,
-      minWidth: 120,
-    },
-    { field: "remark", headerName: "Remarks", flex: 1, minWidth: 120 },
-  ];
-
-  console.log(transactionalData);
-  const rows = Array.isArray(transactionalData)
-    ? transactionalData.map((item, index) => ({
-      ...item,
-      sn: index + 1,
-      id: index + 1,
-    }))
-    : [];
-
+const ModernDashboardLayout = () => {
   return (
-    <div className="w-full">
-      <div className="flex items-end justify-start w-full gap-4 pb-5 align-middle flex--wrap">
-        {/*<div className="w-full sm:w-56">
-           <MultiSelect
-            label={"Select User"}
-            arrow
-            className="custom-multiselect"
-            placeholder="Select Groups"
-            maxSelectedLabels={0}
-            optionLabel="name"
-            options={[{ name: "John Doe" }, { name: "Jane Doe" }]}
-            // value={}
-            onChange={(e) => {}}
-            filter
-          /> 
-        </div>*/}
-        <div className="w-full sm:w-56">
-          <UniversalDatePicker
-            id="transactionshistoryfrom"
-            name="transactionshistoryfrom"
-            label="From"
-            placeholder="Pick a start date"
-            tooltipContent="Select the starting date for your project"
-            tooltipPlacement="right"
-            errorText="Please select a valid date"
-            value={setFilterData.startDate}
-            onChange={(newValue) => {
-              setFilterData({
-                ...filterData,
-                startDate: new Date(newValue).toLocaleDateString("en-GB"),
-              });
-            }}
-          />
+    <div className="min-h-screen flex bg-gradient-to-br from-gray-900 to-slate-800 text-white">
+      {/* Sidebar */}
+      <aside className="w-72 p-6 bg-black bg-opacity-20 backdrop-blur-xl flex flex-col justify-between border-r border-slate-700">
+        <div>
+          <h1 className="text-2xl font-bold text-blue-400 mb-8">TaskPilot</h1>
+          <nav className="space-y-6">
+            <div className="flex items-center gap-3 hover:text-blue-400 cursor-pointer">
+              <FaTasks /> Dashboard
+            </div>
+            <div className="flex items-center gap-3 hover:text-blue-400 cursor-pointer">
+              <FaUsers /> Users
+            </div>
+            <div className="flex items-center gap-3 hover:text-blue-400 cursor-pointer">
+              <FaChartLine /> Analytics
+            </div>
+            <div className="flex items-center gap-3 hover:text-blue-400 cursor-pointer">
+              <FaBell /> Notifications
+            </div>
+            <div className="flex items-center gap-3 hover:text-blue-400 cursor-pointer">
+              <FaUserShield /> Roles
+            </div>
+          </nav>
         </div>
-        <div className="w-full sm:w-56">
-          <UniversalDatePicker
-            id="transactionshistoryto"
-            name="transactionshistoryto"
-            label="To"
-            placeholder="Pick a start date"
-            tooltipContent="Select the starting date for your project"
-            tooltipPlacement="right"
-            errorText="Please select a valid date"
-            value={setFilterData.toDate}
-            onChange={(newValue) => {
-              setFilterData({
-                ...filterData,
-                toDate: new Date(newValue).toLocaleDateString("en-GB"),
-              });
-            }}
-          />
+        <div className="flex items-center gap-3 text-sm text-slate-400 cursor-pointer hover:text-blue-400">
+          <FaMoon /> Dark Mode
+        </div>
+      </aside>
+
+      {/* Main content */}
+      <main className="flex-1 p-8 space-y-10">
+        {/* Header */}
+        <header className="flex justify-between items-center">
+          <h2 className="text-3xl font-bold">Welcome Admin</h2>
+          <button className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-white font-medium shadow">
+            + New Task
+          </button>
+        </header>
+
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-5 rounded-xl shadow-xl">
+            <p className="text-sm text-slate-300">Total Tasks</p>
+            <h3 className="text-2xl font-semibold mt-2">320</h3>
+          </div>
+          <div className="bg-gradient-to-r from-green-600 to-emerald-500 p-5 rounded-xl shadow-xl">
+            <p className="text-sm text-slate-300">Completed</p>
+            <h3 className="text-2xl font-semibold mt-2">214</h3>
+          </div>
+          <div className="bg-gradient-to-r from-yellow-500 to-orange-400 p-5 rounded-xl shadow-xl">
+            <p className="text-sm text-slate-800">Pending</p>
+            <h3 className="text-2xl font-semibold mt-2 text-slate-800">86</h3>
+          </div>
+          <div className="bg-gradient-to-r from-red-600 to-pink-500 p-5 rounded-xl shadow-xl">
+            <p className="text-sm text-slate-100">Overdue</p>
+            <h3 className="text-2xl font-semibold mt-2">20</h3>
+          </div>
         </div>
 
-        {/* <div className="w-full sm:w-56">
-          <AnimatedDropdown
-            id="transactionshistoryservice"
-            name="transactionshistoryservice"
-            label="Service"
-            tooltipContent="Select service"
-            tooltipPlacement="right"
-            options={[{ value: "All", label: "All" }]}
-            placeholder="Service"
-            // value={selectedHistoryService}
-            onChange={(value) => {}}
-          />
-        </div> */}
-        <div className="w-full sm:w-56">
-          <AnimatedDropdown
-            id="transactionshistorytype"
-            name="transactionshistorytype"
-            label="Type"
-            tooltipContent="Select type"
-            tooltipPlacement="right"
-            options={[
-              { value: 0, label: "All" },
-              { value: 1, label: "Recharge" },
-              { value: 3, label: "Credit" },
-              { value: 4, label: "Debit" },
-            ]}
-            placeholder="Type"
-            value={filterData.rechargeType}
-            onChange={(value) => {
-              setFilterData({
-                ...filterData,
-                rechargeType: value,
-              });
-            }}
-          />
-        </div>
-
-        <div className="w-max-content ">
-          <UniversalButton
-            id="manageCampaignSearchBtn"
-            name="manageCampaignSearchBtn"
-            label={isFetching ? "Searching..." : "Search"}
-            icon={<IoSearch />}
-            variant="primary"
-            onClick={handleSearch}
-            disabled={isFetching}
-          />
-        </div>
-      </div>
-      {isFetching ? (
-        <div className="">
-          <UniversalSkeleton height="35rem" width="100%" />
-        </div>
-      ) : (
-        <div className="w-full">
-
-          <DataTable
-            id="transactionshistorytable"
-            name="transactionshistorytable"
-            col={columns}
-            rows={rows}
-          />
-        </div>
-      )}
+        {/* Add more sections here (e.g., charts, task table, calendar, activity feed) */}
+      </main>
     </div>
   );
 };
 
-export default Transactions;
+export default ModernDashboardLayout;
