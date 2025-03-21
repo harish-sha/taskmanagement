@@ -7,6 +7,7 @@ import ManagerDashboard from './pages/ManagerDashboard';
 import UserDashboard from './pages/UserDashboard';
 import { AuthProvider } from './context/AuthContext';
 import Dummy from './dummy/Dummy';
+import TaskBoardPage from './pages/TaskBoardPage';
 
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/manager" element={<ManagerDashboard />} />
         <Route path="/user" element={<UserDashboard />} />
+        <Route path="/tasks" element={<TaskBoardPage />} />
         <Route path="/dummy" element={<Dummy />} />
 
 
