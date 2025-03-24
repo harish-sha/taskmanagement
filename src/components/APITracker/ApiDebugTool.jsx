@@ -201,6 +201,7 @@ const ApiDebugTool = () => {
 
     setLoading(false);
   };
+
   const formatBody = () => {
     try {
       const formatted = JSON.stringify(JSON.parse(body), null, 2);
@@ -240,7 +241,9 @@ const ApiDebugTool = () => {
           <button
             onClick={handleRequest}
             className="bg-orange-200 text-black h-max w-max px-4 py-2 rounded-md cursor-pointer shadow hover:bg-orange-400 hover:text-white">
-            <RocketLaunchOutlinedIcon fontSize="small" />Send
+            {/* <RocketLaunchOutlinedIcon fontSize="small" />Send */}
+            {loading ? "Cancel" : <><RocketLaunchOutlinedIcon fontSize="small" /> Send</>}
+
           </button>
           {/* here where send request untill fetching the text was cancel and the rocket icon remove and bg was bg-gray-400 */}
         </div>
@@ -338,7 +341,9 @@ const ApiDebugTool = () => {
         </Tabs>
         {/* here two tabs should be one for params and one for headers and separate inputs for them and delete functionlaity also and with the check box it was enable or disable and checkbox was for each input  */}
         <CustomTabPanel value={value} index={0} className="">
-          <div className="mb-4">
+          <FieldEditor fields={params} setFields={setParams} title="Params" />
+
+          {/* <div className="mb-4">
             <div className="flex items-center justify-between mb-3" >
               <label className="block text-md font-medium">Params</label>
               <button
@@ -402,10 +407,10 @@ const ApiDebugTool = () => {
               </div>
             ))}
 
-          </div>
+          </div> */}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1} className="">
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <div className="flex items-center justify-between mb-3" >
               <label className="block text-md font-medium">Headers</label>
               <button
@@ -469,7 +474,9 @@ const ApiDebugTool = () => {
               </div>
             ))}
 
-          </div>
+          </div> */}
+          <FieldEditor fields={headers} setFields={setHeaders} title="Headers" />
+
         </CustomTabPanel>
 
 
@@ -523,9 +530,8 @@ const ApiDebugTool = () => {
             </h4>
             <label htmlFor=""><VscJson /></label>
           </div>
-          <div className="flex items-center gap-2" >
+          {/* <div className="flex items-center gap-2" >
             <h4 className="font-semibold  text-gray-700">
-              {/* Status */}
             </h4>
             <div className="font-semibold text-xs bg-green-300 rounded-xl  text-green-700 px-2 py-1" >
               200 OK
@@ -536,7 +542,10 @@ const ApiDebugTool = () => {
             <div className="font-semibold text-xs text-gray-600 px-2 border-l-2" >
               117 ms
             </div>
-
+          </div> */}
+          <div className="flex items-center gap-2">
+            {status && <div className="font-semibold text-xs bg-green-300 rounded-xl text-green-700 px-2 py-1">{status}</div>}
+            {responseTime && <div className="font-semibold text-xs text-gray-600 px-2 border-l-2">{responseTime}</div>}
           </div>
         </div>
         <pre className="bg-gray-900 text-green-200 p-4 rounded-md text-xs h-72 overflow-auto">
@@ -548,5 +557,55 @@ const ApiDebugTool = () => {
     </div>
   );
 };
+
+const FieldEditor = ({ fields, setFields, title }) => (
+  <div className="mb-4">
+    <div className="flex items-center justify-between mb-3">
+      <label className="block text-md font-medium">{title}</label>
+      <button
+        onClick={() => setFields(prev => [...prev, { key: "", value: "", type: "text", enabled: true }])}
+        className="text-sm text-green-500 bg-gray-900 px-2 py-2 rounded-md"
+      >
+        + Add {title}
+      </button>
+    </div>
+    {fields.map((f, i) => (
+      <div key={i} className="flex gap-2 mb-2 items-center">
+        <Checkbox inputId={`cb-${title}-${i}`} onChange={() => toggleEnabled(setFields, i)} checked={f.enabled} />
+        <input
+          placeholder="Key"
+          className="border p-2 rounded text-sm border-gray-400 w-1/4"
+          value={f.key}
+          onChange={(e) => handleChangeField(setFields, i, "key", e.target.value)}
+        />
+        {f.type === "file" ? (
+          <input
+            type="file"
+            className="border p-2 rounded text-sm w-1/4"
+            onChange={(e) => handleChangeField(setFields, i, "value", e.target.files[0])}
+          />
+        ) : (
+          <input
+            placeholder="Value"
+            className="border p-2 rounded text-sm border-gray-400 w-1/4"
+            value={f.value}
+            onChange={(e) => handleChangeField(setFields, i, "value", e.target.value)}
+          />
+        )}
+        <select
+          value={f.type}
+          onChange={(e) => handleChangeField(setFields, i, "type", e.target.value)}
+          className="border p-2 rounded text-sm w-20 border-gray-400"
+        >
+          <option value="text">Text</option>
+          <option value="file">File</option>
+        </select>
+        <button onClick={() => deleteField(setFields, i)} className="rounded-2xl p-1.5 hover:bg-gray-200">
+          <MdOutlineDeleteForever className="text-red-500 hover:text-red-600" size={20} />
+        </button>
+      </div>
+    ))}
+  </div>
+);
 
 export default ApiDebugTool;
