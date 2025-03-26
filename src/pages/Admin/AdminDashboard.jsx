@@ -16,7 +16,7 @@ import {
   FormControl,
 } from "@mui/material";
 // import Sidebar from '../components/Sidebar';
-import Sidebar from "../components/common/Sidebar";
+import Sidebar from "../../components/common/Sidebar";
 
 import { motion } from "framer-motion";
 import FullCalendar from "@fullcalendar/react";
@@ -41,8 +41,8 @@ import {
 } from "react-icons/fa";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import AnimatedStats from "../components/common/AnimatedStats";
-import ActivityFeed from "../components/common/ActivityFeed";
+import AnimatedStats from "../../components/common/AnimatedStats";
+import ActivityFeed from "../../components/common/ActivityFeed";
 import {
   // FaTasks,
   FaUsers,
@@ -149,7 +149,7 @@ const AdminDashboard = () => {
   return (
     <Box display="flex" minHeight="100vh" bgcolor="#f8fafc">
       <Sidebar role="admin" />
-      <Box flex={1} p={4}>
+      <Box flex={1} p={3}>
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -159,7 +159,7 @@ const AdminDashboard = () => {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            mb={4}
+            mb={5}
             px={4}
             py={3}
             bgcolor="#ffffff"
@@ -171,7 +171,7 @@ const AdminDashboard = () => {
                 👋 Welcome back, Admin
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Here’s what’s happening with your workspace today.
+                Here's what's happening with your workspace today.
               </Typography>
             </Box>
             <Tooltip title="Notifications">
@@ -181,9 +181,7 @@ const AdminDashboard = () => {
             </Tooltip>
           </Box>
         </motion.div>
-
-        {/* 🔥 Modern Stat Cards Section */}
-        <Grid container spacing={3} mb={4}>
+        {/* <Grid container spacing={3} mb={4}>
           <Grid item xs={12} sm={6} md={3}>
             <StatCard
               icon={<FaTasks />}
@@ -216,19 +214,22 @@ const AdminDashboard = () => {
               color="#ef4444"
             />
           </Grid>
-        </Grid>
+        </Grid> */}
 
-        <main className="flex-1 p-8 space-y-10">
-          {/* Header */}
-          <header className="flex justify-between items-center">
-            {/* <h2 className="text-3xl font-bold">Welcome Admin</h2> */}
-            <button className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-white font-medium shadow">
+        <main className="flex mb-4 items-center justify-end">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+
+            <button className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-white font-medium shadow-md cursor-pointer">
               + New Task
             </button>
-          </header>
+          </motion.div>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-5 rounded-xl shadow-xl">
               <p className="text-sm text-slate-300">Total Tasks</p>
               <h3 className="text-2xl font-semibold mt-2">320</h3>
@@ -245,14 +246,11 @@ const AdminDashboard = () => {
               <p className="text-sm text-slate-100">Overdue</p>
               <h3 className="text-2xl font-semibold mt-2">20</h3>
             </div>
-          </div>
-
-          {/* Add more sections here (e.g., charts, task table, calendar, activity feed) */}
+          </div> */}
         </main>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           <div className="lg:col-span-2">
             <AnimatedStats />
-            {/* other components */}
           </div>
           <ActivityFeed />
         </div>
@@ -309,6 +307,7 @@ const AdminDashboard = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
+              className=""
             >
               <Paper sx={{ p: 3, height: "100%" }} elevation={4}>
                 <Typography variant="h6" fontWeight={600} mb={2}>

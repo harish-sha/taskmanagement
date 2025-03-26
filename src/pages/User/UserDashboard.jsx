@@ -1,5 +1,5 @@
-import CollaborativeEditor from "../components/Editor/CollaborativeEditor";
-import ApiDebugTool from "../components/APITracker/ApiDebugTool";
+import CollaborativeEditor from "../../components/Editor/CollaborativeEditor";
+import ApiDebugTool from "../../components/APITracker/ApiDebugTool";
 
 const UserDashboard = () => {
   return (

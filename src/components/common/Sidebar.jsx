@@ -10,58 +10,103 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import SettingsIcon from '@mui/icons-material/Settings';
 import InsightsIcon from '@mui/icons-material/Insights';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
+import { useNavigate } from 'react-router-dom';
+
 import MenuIcon from '@mui/icons-material/Menu';
 
 const Sidebar = ({ role = 'admin' }) => {
-  const [collapsed, setCollapsed] = useState(false);
+
+  const navigate = useNavigate();
 
   const navItems = [
-    { label: 'Dashboard', icon: <DashboardIcon />, roles: ['admin', 'manager'] },
-    { label: 'Tasks', icon: <TaskIcon />, roles: ['admin', 'manager', 'user'] },
-    { label: 'Calendar', icon: <CalendarTodayIcon />, roles: ['admin', 'manager', 'user'] },
-    { label: 'Users', icon: <PeopleIcon />, roles: ['admin'] },
-    { label: 'Analytics', icon: <InsightsIcon />, roles: ['admin'] },
-    { label: 'Notifications', icon: <NotificationsIcon />, roles: ['admin', 'manager'] },
-    { label: 'Settings', icon: <SettingsIcon />, roles: ['admin'] },
-    { label: 'Help', icon: <HelpOutlineIcon />, roles: ['admin', 'manager', 'user'] }
+    { label: 'Dashboard', icon: <DashboardIcon />, roles: ['admin', 'manager'], route: '/dashboard' },
+    { label: 'Tasks', icon: <TaskIcon />, roles: ['admin', 'manager', 'user'], route: '/tasks' },
+    { label: 'Calendar', icon: <CalendarTodayIcon />, roles: ['admin', 'manager', 'user'], route: '/calendar' },
+    { label: 'Users', icon: <PeopleIcon />, roles: ['admin'], route: '/users' },
+    { label: 'Analytics', icon: <InsightsIcon />, roles: ['admin'], route: '/analytics' },
+    {
+      label: 'Notifications',
+      icon: <NotificationsIcon />,
+      roles: ['admin', 'manager'],
+      route: '/notifications',
+      subRoutes: [
+        { label: 'Email', route: '/notifications/email' },
+        { label: 'SMS', route: '/notifications/sms' },
+        { label: 'Push', route: '/notifications/push' }
+      ]
+    },
+    { label: 'Settings', icon: <SettingsIcon />, roles: ['admin'], route: '/settings' },
+    { label: 'Help', icon: <HelpOutlineIcon />, roles: ['admin', 'manager', 'user'], route: '/help' }
   ];
 
   return (
     <Drawer
       variant="permanent"
       sx={{
-        width: collapsed ? 72 : 260,
+        width: 72,
         flexShrink: 0,
         '& .MuiDrawer-paper': {
-          width: collapsed ? 72 : 260,
+          width: 72,
           boxSizing: 'border-box',
           backgroundColor: '#1f2937',
           color: '#ffffff',
-          transition: 'width 0.3s ease'
         },
       }}
     >
-      <Toolbar sx={{ justifyContent: collapsed ? 'center' : 'space-between' }}>
-        {!collapsed && (
-          <Typography variant="h6" noWrap component="div">
-            Task Manager
-          </Typography>
-        )}
-        <IconButton onClick={() => setCollapsed(!collapsed)} sx={{ color: 'white' }}>
-          <MenuIcon />
-        </IconButton>
-      </Toolbar>
+      <Typography
+        variant="h6"
+        noWrap
+        component="div"
+        sx={{
+          textAlign: 'center',
+          padding: '16px 0',
+          fontSize: '1rem',
+          fontWeight: 'bold',
+          color: '#ffffff',
+        }}
+      >
+        <AssignmentOutlinedIcon />
+      </Typography>
       <Divider sx={{ borderColor: '#374151' }} />
       <List>
         {navItems
           .filter(item => item.roles.includes(role))
           .map((item, index) => (
-            <Tooltip title={collapsed ? item.label : ''} placement="right" key={index}>
-              <ListItem button>
-                <ListItemIcon sx={{ color: '#ffffff' }}>{item.icon}</ListItemIcon>
-                {!collapsed && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <ListItemText primary={item.label} />
-                </motion.div>}
+            <Tooltip
+              title={
+                item.subRoutes
+                  ? (
+                    <div>
+                      {item.subRoutes.map((sub, i) => (
+                        <div key={i} style={{ padding: '4px 8px', cursor: 'pointer' }} onClick={() => navigate(sub.route)}>
+                          {sub.label}
+                        </div>
+                      ))}
+                    </div>
+                  )
+                  : item.label
+              }
+              placement="right"
+              arrow
+              key={index}
+            >
+              <ListItem
+                button
+                onClick={() => item.route && navigate(item.route)}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  padding: '12px 0',
+                  '&:hover': {
+                    backgroundColor: '#374151',
+                  },
+                }}
+              >
+                <ListItemIcon sx={{ color: '#ffffff', justifyContent: 'center' }}>
+                  {item.icon}
+                </ListItemIcon>
               </ListItem>
             </Tooltip>
           ))}

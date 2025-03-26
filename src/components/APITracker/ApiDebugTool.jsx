@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Checkbox } from 'primereact/checkbox';
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { Box } from "@mui/material";
@@ -102,11 +102,35 @@ const ApiDebugTool = () => {
   const deleteField = (setState, index) => setState(prev => prev.filter((_, i) => i !== index));
   const toggleEnabled = (setState, index) => setState(prev => prev.map((f, i) => i === index ? { ...f, enabled: !f.enabled } : f));
 
+  // const buildUrlWithParams = () => {
+  //   const url = new URL(endpoint);
+  //   params.filter(p => p.enabled && p.key).forEach(p => url.searchParams.append(p.key, p.value));
+  //   return url.toString();
+  // };
   const buildUrlWithParams = () => {
-    const url = new URL(endpoint);
-    params.filter(p => p.enabled && p.key).forEach(p => url.searchParams.append(p.key, p.value));
-    return url.toString();
+    try {
+      const tempUrl = endpoint.startsWith("http") ? endpoint : `https://${endpoint}`;
+      const url = new URL(tempUrl);
+
+      params
+        .filter(p => p.enabled && p.key)
+        .forEach(p => url.searchParams.append(p.key, p.value));
+
+      return url.toString();
+    } catch (error) {
+      console.error("Invalid URL", error);
+      return endpoint; // fallback to raw input
+    }
   };
+
+  useEffect(() => {
+    if (endpoint && !endpoint.startsWith("http")) {
+      setEndpoint(`https://${endpoint}`);
+    }
+  }, [endpoint]);
+
+
+
 
   const addHeaderField = () =>
     setHeaders([...headers, { key: "", value: "", type: "text" }]);
@@ -181,9 +205,15 @@ const ApiDebugTool = () => {
       if (authToken) config.headers["Authorization"] = `Bearer ${authToken}`;
 
       if (method !== "GET" && method !== "HEAD") {
-        config.body = isFormData ? formData : JSON.stringify(JSON.parse(body));
-        if (!isFormData) config.headers["Content-Type"] = "application/json";
+        if (isFormData) {
+          config.body = formData;
+        } else if (body.trim()) {
+          // Only attach JSON body if not empty
+          config.body = JSON.stringify(JSON.parse(body));
+          config.headers["Content-Type"] = "application/json";
+        }
       }
+
 
       const start = performance.now();
       const res = await fetch(url, config);
@@ -259,6 +289,10 @@ const ApiDebugTool = () => {
           className="w-full border p-2 rounded text-sm border-gray-400 focus:outline-none    "
         />
       </div>
+      <p className="text-xs text-gray-500 mt-1">
+        Final Request URL: <code>{buildUrlWithParams()}</code>
+      </p>
+
 
       <Box sx={{ width: "100%" }}>
         <Tabs
@@ -341,7 +375,14 @@ const ApiDebugTool = () => {
         </Tabs>
         {/* here two tabs should be one for params and one for headers and separate inputs for them and delete functionlaity also and with the check box it was enable or disable and checkbox was for each input  */}
         <CustomTabPanel value={value} index={0} className="">
-          <FieldEditor fields={params} setFields={setParams} title="Params" />
+          <FieldEditor
+            fields={params}
+            setFields={setParams}
+            title="Params"
+            deleteField={deleteField}
+            toggleEnabled={toggleEnabled}
+            handleChangeField={handleChangeField}
+          />
 
           {/* <div className="mb-4">
             <div className="flex items-center justify-between mb-3" >
@@ -475,7 +516,14 @@ const ApiDebugTool = () => {
             ))}
 
           </div> */}
-          <FieldEditor fields={headers} setFields={setHeaders} title="Headers" />
+          <FieldEditor
+            fields={headers}
+            setFields={setHeaders}
+            title="Headers"
+            deleteField={deleteField}
+            toggleEnabled={toggleEnabled}
+            handleChangeField={handleChangeField}
+          />
 
         </CustomTabPanel>
 
@@ -558,7 +606,7 @@ const ApiDebugTool = () => {
   );
 };
 
-const FieldEditor = ({ fields, setFields, title }) => (
+const FieldEditor = ({ fields, setFields, title, deleteField, toggleEnabled, handleChangeField }) => (
   <div className="mb-4">
     <div className="flex items-center justify-between mb-3">
       <label className="block text-md font-medium">{title}</label>
@@ -574,7 +622,7 @@ const FieldEditor = ({ fields, setFields, title }) => (
         <Checkbox inputId={`cb-${title}-${i}`} onChange={() => toggleEnabled(setFields, i)} checked={f.enabled} />
         <input
           placeholder="Key"
-          className="border p-2 rounded text-sm border-gray-400 w-1/4"
+          className="border p-2 rounded text-sm border-gray-400 w-1/4 focus:outline-none"
           value={f.key}
           onChange={(e) => handleChangeField(setFields, i, "key", e.target.value)}
         />
@@ -587,11 +635,18 @@ const FieldEditor = ({ fields, setFields, title }) => (
         ) : (
           <input
             placeholder="Value"
-            className="border p-2 rounded text-sm border-gray-400 w-1/4"
+            className="border p-2 rounded text-sm border-gray-400 w-1/4 focus:outline-none"
             value={f.value}
             onChange={(e) => handleChangeField(setFields, i, "value", e.target.value)}
           />
         )}
+        <input
+          placeholder="Description"
+          className="border p-2 rounded text-sm border-gray-400 focus:outline-none w-2/4"
+          value={f.description}
+          onChange={(e) => handleChangeField(setFields, i, "description", e.target.value)}
+        />
+
         <select
           value={f.type}
           onChange={(e) => handleChangeField(setFields, i, "type", e.target.value)}

@@ -12,6 +12,7 @@ const stats = [
     count: 284,
     icon: <FaTasks />,
     color: "bg-blue-500",
+    bg_color: "bg-gradient-to-r from-blue-300 to-blue-500",
     sub: "22 new this week",
   },
   {
@@ -19,6 +20,7 @@ const stats = [
     count: 173,
     icon: <FaCheckCircle />,
     color: "bg-green-500",
+    bg_color: "bg-gradient-to-r from-green-200 to-green-400",
     sub: "+12 today",
   },
   {
@@ -26,6 +28,7 @@ const stats = [
     count: 79,
     icon: <FaHourglassHalf />,
     color: "bg-yellow-500",
+    bg_color: "bg-gradient-to-r from-yellow-200 to-yellow-400",
     sub: "5 overdue",
   },
   {
@@ -33,6 +36,7 @@ const stats = [
     count: 32,
     icon: <FaExclamationTriangle />,
     color: "bg-red-500",
+    bg_color: "bg-gradient-to-r from-red-200 to-red-400",
     sub: "↑ 3 since yesterday",
   },
 ];
@@ -43,7 +47,7 @@ const AnimatedStats = () => {
       {stats.map((s, i) => (
         <motion.div
           key={i}
-          className="p-5 bg-white rounded-xl shadow-lg flex items-start gap-4"
+          className={`p-5 ${s.bg_color} rounded-xl shadow-lg flex items-start gap-4`}
           whileHover={{ scale: 1.03 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -54,8 +58,8 @@ const AnimatedStats = () => {
           </div>
           <div>
             <h3 className="text-xl font-semibold text-gray-800">{s.count}</h3>
-            <p className="text-sm font-medium text-gray-500">{s.label}</p>
-            <span className="text-xs text-gray-400">{s.sub}</span>
+            <p className="text-sm font-medium text-gray-800">{s.label}</p>
+            <span className="text-xs text-gray-700">{s.sub}</span>
           </div>
         </motion.div>
       ))}
