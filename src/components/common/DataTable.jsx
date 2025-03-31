@@ -3,7 +3,9 @@ import { styled } from "@mui/material/styles";
 import { DataGrid, GridFooterContainer } from "@mui/x-data-grid";
 import { Paper, Typography, Box, Button } from "@mui/material";
 import { useState } from "react";
-import CustomNoRowsOverlay from "../../whatsapp/components/CustomNoRowsOverlay";
+import toast from "react-hot-toast";
+import CustomNoRowsOverlay from "./CustomNoRowsOverlay";
+
 
 const PaginationList = styled("ul")({
   listStyle: "none",
@@ -74,7 +76,6 @@ export const DataTable = ({
   setSelectedRows,
   selectedRows,
 }) => {
-  console.log("Rows", rows);
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 10,

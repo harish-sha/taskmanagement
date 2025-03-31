@@ -51,6 +51,7 @@ import {
   FaUserShield,
   FaMoon,
 } from "react-icons/fa";
+import { DataTable } from "../../components/common/DataTable";
 
 ChartJS.register(
   CategoryScale,
@@ -146,6 +147,120 @@ const AdminDashboard = () => {
       ? events
       : events.filter((e) => e.title.includes(`(${filter})`));
 
+  const columns = [
+    { field: 'sn', headerName: 'S.No', flex: 0, minWidth: 80 },
+    { field: 'templateName', headerName: 'Template Name', flex: 1, minWidth: 120 },
+    { field: 'category', headerName: 'Category', flex: 1, minWidth: 120 },
+    { field: 'status', headerName: 'Status', flex: 1, minWidth: 120 },
+    { field: 'type', headerName: 'Type', flex: 1, minWidth: 120 },
+    { field: 'health', headerName: 'Health', flex: 1, minWidth: 120 },
+    { field: 'createdDate', headerName: 'Created At', flex: 1, minWidth: 120 },
+    // {
+    //   field: "TemplateData",
+    //   headerName: "TemplateData",
+    //   flex: 1,
+    //   minWidth: 120,
+    //   renderCell: (params) => (
+    //     <CustomTooltip
+    //       arrow
+    //       placement="top"
+    //       title={toggleStates[params.row.templateName] === 1 ? "Active" : "Inactive"}
+    //     >
+    //       <Switch
+    //         checked={toggleStates[params.row.templateName] === 1}
+    //         onChange={() => handleStatusChange(params.row.templateName, toggleStates[params.row.templateName] || 0)}
+    //         sx={{
+    //           "& .MuiSwitch-switchBase.Mui-checked": {
+    //             color: "#34C759",
+    //           },
+    //           "& .css-161ms7l-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track":
+    //           {
+    //             backgroundColor: "#34C759",
+    //           },
+    //         }}
+    //       />
+    //     </CustomTooltip>
+    //   ),
+    // },
+    // {
+    //   field: 'action',
+    //   headerName: 'Action',
+    //   flex: 1,
+    //   minWidth: 150,
+    //   renderCell: (params) => (
+    //     <>
+    //       <CustomTooltip
+    //         title="View"
+    //         placement="top"
+    //         arrow
+    //       >
+    //         <IconButton className='text-xs' onClick={() => handleView(params.row)}>
+    //           <VisibilityIcon
+    //             sx={{
+    //               fontSize: '1.2rem',
+    //               color: 'green'
+    //             }}
+    //           />
+    //         </IconButton>
+    //       </CustomTooltip>
+    //       <CustomTooltip
+    //         title="Duplicate"
+    //         placement="top"
+    //         arrow
+    //       >
+    //         <IconButton onClick={() => handleDuplicate(params.row)}>
+    //           <FileCopyIcon
+    //             sx={{
+    //               fontSize: '1.2rem',
+    //               color: 'gray',
+    //             }} />
+    //         </IconButton>
+    //       </CustomTooltip>
+    //       <CustomTooltip
+    //         title="CURL"
+    //         placement="top"
+    //         arrow
+    //       >
+    //         <IconButton onClick={(event) => handleApi(event, params.row)}>
+    //           <TerminalOutlinedIcon
+    //             sx={{
+    //               fontSize: '1.2rem',
+    //               color: '#000',
+    //             }} />
+    //         </IconButton>
+    //       </CustomTooltip>
+    //       <CustomTooltip
+    //         title="Delete"
+    //         placement="top"
+    //         arrow
+    //       >
+    //         <IconButton onClick={(event) => handleOpenDeleteDialog(params.row)}>
+    //           <DeleteForeverIcon
+    //             sx={{
+    //               fontSize: '1.2rem',
+    //               color: '#e31a1a',
+    //             }} />
+    //         </IconButton>
+    //       </CustomTooltip>
+
+    //     </>
+    //   ),
+    // },
+  ];
+
+  // use this when you want to create rows dynamically
+  const rows = Array.from({ length: 500 }, (_, i) => ({
+    id: i + 1,
+    sn: i + 1,
+    templateName: 'Ram',
+    category: 'Sharma',
+    status: 66,
+    type: '5',
+    health: 'High',
+    createdDate: '12/10/2024',
+    action: 'True',
+  }));
+
   return (
     <Box display="flex" minHeight="100vh" bgcolor="#f8fafc">
       <Sidebar role="admin" />
@@ -227,26 +342,6 @@ const AdminDashboard = () => {
               + New Task
             </button>
           </motion.div>
-
-          {/* Cards */}
-          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-5 rounded-xl shadow-xl">
-              <p className="text-sm text-slate-300">Total Tasks</p>
-              <h3 className="text-2xl font-semibold mt-2">320</h3>
-            </div>
-            <div className="bg-gradient-to-r from-green-600 to-emerald-500 p-5 rounded-xl shadow-xl">
-              <p className="text-sm text-slate-300">Completed</p>
-              <h3 className="text-2xl font-semibold mt-2">214</h3>
-            </div>
-            <div className="bg-gradient-to-r from-yellow-500 to-orange-400 p-5 rounded-xl shadow-xl">
-              <p className="text-sm text-slate-800">Pending</p>
-              <h3 className="text-2xl font-semibold mt-2 text-slate-800">86</h3>
-            </div>
-            <div className="bg-gradient-to-r from-red-600 to-pink-500 p-5 rounded-xl shadow-xl">
-              <p className="text-sm text-slate-100">Overdue</p>
-              <h3 className="text-2xl font-semibold mt-2">20</h3>
-            </div>
-          </div> */}
         </main>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           <div className="lg:col-span-2">
@@ -255,7 +350,13 @@ const AdminDashboard = () => {
           <ActivityFeed />
         </div>
 
-        {/* 📅 Task Calendar + 📊 Stats Chart Section */}
+        <DataTable
+          id="transactionshistorytable"
+          name="transactionshistorytable"
+          col={columns}
+          rows={rows}
+        />
+
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
             <motion.div
@@ -302,7 +403,7 @@ const AdminDashboard = () => {
             </motion.div>
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          {/* <Grid item xs={12} md={4}>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -316,10 +417,9 @@ const AdminDashboard = () => {
                 <Bar data={taskStats} />
               </Paper>
             </motion.div>
-          </Grid>
+          </Grid> */}
         </Grid>
 
-        {/* 📝 Assign Task Modal */}
         <Modal open={openModal} onClose={() => setOpenModal(false)}>
           <Box
             sx={{
@@ -380,6 +480,8 @@ const AdminDashboard = () => {
             </Button>
           </Box>
         </Modal>
+
+
       </Box>
     </Box>
   );

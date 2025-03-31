@@ -45,29 +45,19 @@ const Sidebar = ({ role = 'admin' }) => {
       variant="permanent"
       sx={{
         width: 72,
+        zIndex: 1000,
         flexShrink: 0,
         '& .MuiDrawer-paper': {
           width: 72,
           boxSizing: 'border-box',
-          backgroundColor: '#1f2937',
-          color: '#ffffff',
+          backgroundColor: '#fff',
+          color: 'black',
         },
       }}
     >
-      <Typography
-        variant="h6"
-        noWrap
-        component="div"
-        sx={{
-          textAlign: 'center',
-          padding: '16px 0',
-          fontSize: '1rem',
-          fontWeight: 'bold',
-          color: '#ffffff',
-        }}
-      >
-        <AssignmentOutlinedIcon />
-      </Typography>
+      <div className='py-2 flex items-center justify-center' >
+        <img src="src/assets/celifav.png" alt="" width='40' height='40' />
+      </div>
       <Divider sx={{ borderColor: '#374151' }} />
       <List>
         {navItems
@@ -100,11 +90,16 @@ const Sidebar = ({ role = 'admin' }) => {
                   cursor: 'pointer',
                   padding: '12px 0',
                   '&:hover': {
-                    backgroundColor: '#374151',
+                    backgroundColor: '#e6f4ff',
                   },
                 }}
               >
-                <ListItemIcon sx={{ color: '#ffffff', justifyContent: 'center' }}>
+                <ListItemIcon sx={{
+                  color: '#374151', justifyContent: 'center',
+                  '&:hover': {
+                    color: '#193cb8 ',
+                  },
+                }}>
                   {item.icon}
                 </ListItemIcon>
               </ListItem>
