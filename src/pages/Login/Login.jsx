@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import InputField from '../components/common/InputField'
-import { useAuth } from '../context/AuthContext';
-import UniversalButton from '../components/common/UniversalButton';
-import AnimatedDropdown from '../components/common/AnimatedDropdown';
+import InputField from '../../components/common/InputField'
+import { useAuth } from '../../context/AuthContext';
+import UniversalButton from '../../components/common/UniversalButton';
 
 import toast from 'react-hot-toast';
 
@@ -43,17 +42,6 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
                 />
-                {/* <AnimatedDropdown
-                    label="Select Role"
-                    options={[
-                        { value: "admin", label: "Admin" },
-                        { value: "manager", label: "Manager" },
-                        { value: "user", label: "User" },
-                    ]}
-                    value={role}
-                    onChange={(value) => setRole(value)}
-                    placeholder='Select Status'
-                /> */}
                 <div className="flex items-center justify-center" >
                     <UniversalButton
                         label={loading ? "Logging in..." : "Login"}
