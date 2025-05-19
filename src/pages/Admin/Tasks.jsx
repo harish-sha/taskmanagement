@@ -9,6 +9,7 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import UniversalButton from "../../components/common/UniversalButton";
 import CreateUser from '../../components/UserModel/CreateUser';
 import AssignTask from '../../components/UserModel/AssignTask';
+import RenderHistory from '../../components/Miscellaneous/RenderHistory';
 
 const Tasks = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -472,6 +473,7 @@ const Tasks = () => {
         </div>
 
         {renderHistoryDrawer()}
+
 
         {renderEditDrawer()}
 
