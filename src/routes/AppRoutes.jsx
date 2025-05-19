@@ -9,7 +9,8 @@ import UserDashboards from '../pages/User/UserDashboards';
 import Roles from '../pages/Admin/Roles';
 import Dummy from '../dummy/Dummy';
 import PrivateRoute from '../auth/PrivateRoute';
-
+import ManagerTask from '../pages/Manager/ManagerTask';
+import ManagerCalendar from '../pages/Manager/ManagerCalendar';
 
 const AppRoutes = () => {
     return (
@@ -31,8 +32,11 @@ const AppRoutes = () => {
                 <PrivateRoute role="manager">
                     <ManagerLayout />
                 </PrivateRoute>
-            }>
+            } >
                 <Route index element={<ManagerDashboard />} />
+                <Route path='dashboard' element={<ManagerDashboard />} />
+                <Route path='task' element={<ManagerTask />} />
+                <Route path='calendar' element={<ManagerCalendar />} />
             </Route>
 
             {/* User */}

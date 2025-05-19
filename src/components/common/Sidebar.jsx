@@ -146,9 +146,9 @@ const Sidebar = ({ role = "admin", user = { username: "Admin", role: "admin" } }
   };
 
   const navItems = [
-    { label: "Dashboard", icon: FiHome, roles: ["admin", "manager"], route: "/dashboard" },
-    { label: "Tasks", icon: FiTag, roles: ["admin", "manager", "user"], route: "/tasks" },
-    { label: "Calendar", icon: FiMonitor, roles: ["admin", "manager", "user"], route: "/calendar" },
+    { label: "Dashboard", icon: FiHome, roles: ["admin", "manager"], route: "dashboard" },
+    { label: "Tasks", icon: FiTag, roles: ["admin", "manager", "user"], route:"task" },
+    { label: "Calendar", icon: FiMonitor, roles: ["admin", "manager", "user"], route: "calendar" },
     { label: "Users", icon: FiUsers, roles: ["admin"], route: "/admin/manageroles" },
     { label: "Analytics", icon: FiBarChart, roles: ["admin"], route: "/analytics" },
     {
