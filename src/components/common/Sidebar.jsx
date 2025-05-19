@@ -146,25 +146,25 @@ const Sidebar = ({ role = "admin", user = { username: "Admin", role: "admin" } }
   };
 
   const navItems = [
-    { label: "Dashboard", icon: FiHome, roles: ["admin", "manager"], route: "/dashboard" },
-    { label: "Tasks", icon: FiTag, roles: ["admin", "manager", "user"], route: "/tasks" },
-    { label: "Calendar", icon: FiMonitor, roles: ["admin", "manager", "user"], route: "/calendar" },
+    { label: "Dashboard", icon: FiHome, roles: ["admin", "manager"], route: "dashboard" },
+    { label: "Tasks", icon: FiTag, roles: ["admin", "manager", "user"], route: "tasks" },
+    { label: "Calendar", icon: FiMonitor, roles: ["admin", "manager", "user"], route: "calendar" },
     { label: "Users", icon: FiUsers, roles: ["admin"], route: "/admin/manageroles" },
-    { label: "Analytics", icon: FiBarChart, roles: ["admin"], route: "/analytics" },
+    { label: "Analytics", icon: FiBarChart, roles: ["admin"], route: "/admin/analytics" },
     {
       label: "Logout", icon: FiLogOut, roles: ["admin", "manager", "user"],
       onClick: handleLogout
     },
-    {
-      label: "Products",
-      icon: FiShoppingCart,
-      roles: ["admin", "manager"],
-      dropdownItems: [
-        { label: "Add Product", route: "/products/add" },
-        { label: "Manage Products", route: "/products/manage" },
-        { label: "Product Categories", route: "/products/categories" },
-      ],
-    },
+    // {
+    //   label: "Products",
+    //   icon: FiShoppingCart,
+    //   roles: ["admin", "manager"],
+    //   dropdownItems: [
+    //     { label: "Add Product", route: "/products/add" },
+    //     { label: "Manage Products", route: "/products/manage" },
+    //     { label: "Product Categories", route: "/products/categories" },
+    //   ],
+    // },
   ];
 
   return (
