@@ -1,3 +1,4 @@
+import React, {useState} from "react";
 import {
   Box,
   Grid,
@@ -17,25 +18,47 @@ import { motion } from "framer-motion";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import dayjs from "dayjs";
+import toast from 'react-hot-toast';
 
-const Calendar = ({
-  filter,
-  setFilter,
-  filteredEvents,
-  handleDateClick,
-  openModal,
-  setOpenModal,
-  selectedDate,
-  reminderTitle,
-  setReminderTitle,
-  reminderDesc,
-  setReminderDesc,
-  reminderStatus,
-  setReminderStatus,
-  handleTaskSubmit,
-}) => {
-  const theme = useTheme();
-  const isXs = useMediaQuery(theme.breakpoints.down("sm"));
+const Calendar = () => {
+    const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down("sm")); // small screen check
+
+  const [filter, setFilter] = useState("All");
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [reminderTitle, setReminderTitle] = useState("");
+  const [reminderDesc, setReminderDesc] = useState("");
+  const [reminderStatus, setReminderStatus] = useState("Pending");
+
+  const users = [
+    { name: "Alice" },
+    { name: "Bob" },
+    { name: "Charlie" },
+  ];
+
+  const allEvents = [
+    { title: "Meeting with Bob", date: "2025-05-21", status: "Pending" },
+    { title: "Project Review", date: "2025-05-22", status: "Completed" },
+  ];
+
+  const filteredEvents =
+    filter === "All"
+      ? allEvents
+      : allEvents.filter((event) => event.status === filter);
+
+  const handleDateClick = (info) => {
+    setSelectedDate(dayjs(info.date));   
+    setOpenModal(true);
+  };
+
+  const handleTaskSubmit = () => {
+    setOpenModal(false);
+    setReminderTitle("");
+    setReminderDesc("");
+    toast.success("Reminder set successfully 🤗")
+  };
 
   return (
     <Box

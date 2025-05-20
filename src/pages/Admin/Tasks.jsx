@@ -404,7 +404,18 @@ const Tasks = () => {
             <h1>Manage Tasks</h1>
             <div className='flex gap-2'>
             <Button onClick={()=>setAssignTask(true)}>Assign Task </Button>
-            <Button onClick={handleDeleteAllTasks}>Delete All Tasks</Button>
+            <Button
+              onClick={handleDeleteAllTasks}
+              sx={{
+                backgroundColor: "#d32f2f", // red[700]
+                color: "#fff",
+                "&:hover": {
+                  backgroundColor: "#b71c1c", // darker red
+                },
+              }}
+            >
+              Delete All Tasks
+            </Button>
             </div>
         </div>
 
