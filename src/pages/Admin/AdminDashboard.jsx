@@ -1058,7 +1058,7 @@ const AdminDashboard = () => {
 
       {renderNotificationDrawer()}
 
-      <Grid container spacing={4}>
+      {/* <Grid container spacing={4}>
         <Grid item xs={12} md={8}>
           <motion.div
             initial={{ opacity: 0 }}
@@ -1119,9 +1119,10 @@ const AdminDashboard = () => {
               </Paper>
             </motion.div>
           </Grid> */}
-      </Grid>
+      {/* </Grid> */}
+      
 
-      <Modal open={openModal} onClose={() => setOpenModal(false)}>
+      {/* <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <Box
           sx={{
             position: "absolute",
@@ -1180,7 +1181,7 @@ const AdminDashboard = () => {
             Save Task
           </Button>
         </Box>
-      </Modal>
+      </Modal> */}
 
     </Box>
   );

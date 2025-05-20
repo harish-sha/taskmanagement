@@ -132,14 +132,15 @@ import { Dialog } from "primereact/dialog";
 import { Box, Typography, Button } from "@mui/material";
 import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext";
+import UserProfile from "../Miscellaneous/UserProfile";
 
 
-const Sidebar = ({ role = "admin", user = { username: "Admin", role: "admin" } }) => {
+const Sidebar = ({ role = "admin" }) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
   const [profileDialogOpen, setProfileDialogOpen] = useState(false);
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const handleLogout = () => {
     logout();
     toast.success("You have successfully logged out!");
@@ -205,7 +206,7 @@ const Sidebar = ({ role = "admin", user = { username: "Admin", role: "admin" } }
         </div>
       </motion.nav>
 
-      <Dialog
+      {/* <Dialog
         visible={profileDialogOpen}
         onHide={() => setProfileDialogOpen(false)} // Close the dialog
         header="Profile"
@@ -219,7 +220,12 @@ const Sidebar = ({ role = "admin", user = { username: "Admin", role: "admin" } }
             <strong>Role:</strong> {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
           </Typography>
         </Box>
-      </Dialog>
+      </Dialog> */}
+      <UserProfile
+      profileDialogOpen={profileDialogOpen}
+      setProfileDialogOpen={setProfileDialogOpen}
+      userData={user}
+      />
     </>
 
   );

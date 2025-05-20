@@ -4,12 +4,14 @@ import { IconButton, Drawer, Box, Typography, FormControl, InputLabel, Select, M
 import CustomTooltip from "../../components/common/CustomTooltip";
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@mui/joy';
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import UniversalButton from "../../components/common/UniversalButton";
 import CreateUser from '../../components/UserModel/CreateUser';
 import AssignTask from '../../components/UserModel/AssignTask';
 import RenderHistory from '../../components/Miscellaneous/RenderHistory';
+import toast from 'react-hot-toast';
 
 const Tasks = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -28,6 +30,7 @@ const Tasks = () => {
     const [imageCaptions, setImageCaptions] = useState([]);
     const [openCreateUser, setOpenCreateUser] = useState(false)
     const [assignTask, setAssignTask] = useState(false)
+    
 
     const handleImageChange = (e) => {
     const files = e.target.files;
@@ -52,6 +55,10 @@ const Tasks = () => {
     setImageCaptions(newCaptions);
   };
 
+  const handleDeleteTask = () => {
+    toast.success("You have deleted the task")
+  }
+
   const handleSubmit = () => {
     // Submit the updated user details logic
     console.log("User Details Updated", { userName, userEmail, userRole, imageUpload, imageCaptions });
@@ -69,6 +76,10 @@ const Tasks = () => {
         setTaskIdForIssue(row.id);
         setDrawerOpen(true);
       };
+
+      const handleDeleteAllTasks = () => {
+        toast.success("All tasks deleted 😮")
+      }
     
       const handleReportIssue = () => {
         const newIssue = {
@@ -137,6 +148,14 @@ const Tasks = () => {
                     onClick={() => handleEditTask(params.row)}
                   >
                     <EditIcon sx={{ fontSize: "1.2rem", color: "orange" }} />
+                  </IconButton>
+                </CustomTooltip>
+                <CustomTooltip title="Delete Task" placement="top" arrow>
+                  <IconButton
+                    className="text-xs"
+                    onClick={() => handleDeleteTask(params.row)}
+                  >
+                    <DeleteIcon sx={{ fontSize: "1.2rem", color: "red" }} />
                   </IconButton>
                 </CustomTooltip>
               </>
@@ -378,85 +397,15 @@ const Tasks = () => {
           );
 
 
-        const renderHistoryDrawer = () => (
-              <Drawer
-                anchor="right"
-                open={drawerOpen}
-                onClose={() => setDrawerOpen(false)}
-                sx={{ width: "400px" }}
-              >
-                <Box p={3} className="w-[60rem]" >
-                  <h1 className="text-2xl font-semibold mb-5">
-                    Task History
-                  </h1>
-                  <Box
-                    sx={{
-                      maxHeight: "500px",
-                      overflowY: "auto",
-                      border: "1px solid #e0e0e0",
-                      borderRadius: "8px",
-                      backgroundColor: "#ffffff",
-                    }}
-                  >
-                    <table
-                      style={{
-                        width: "100%",
-                        borderCollapse: "collapse",
-                        textAlign: "left",
-                      }}
-                    >
-                      <thead>
-                        <tr style={{ backgroundColor: "#f8f8f8" }}>
-                          <th style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
-                            S.No
-                          </th>
-                          <th style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
-                            Date & Time
-                          </th>
-                          <th style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
-                            Content
-                          </th>
-                          <th style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
-                            Updated By
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {dummyHistory.map((history, index) => (
-                          <tr key={index}>
-                            <td
-                              style={{
-                                padding: "8px",
-                                borderBottom: "1px solid #ddd",
-                                textAlign: "center",
-                              }}
-                            >
-                              {index + 1}
-                            </td>
-                            <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
-                              {history.date}
-                            </td>
-                            <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
-                              {history.action}
-                            </td>
-                            <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
-                              {history.updatedBy || "User"} {/* Default to "User" */}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </Box>
-                </Box>
-              </Drawer>
-            );
-
     return (
         <>
         <div className='flex flex-col gap-4'>
         <div className='text-2xl font-semibold flex justify-between items-center mb-4 '>
             <h1>Manage Tasks</h1>
+            <div className='flex gap-2'>
             <Button onClick={()=>setAssignTask(true)}>Assign Task </Button>
+            <Button onClick={handleDeleteAllTasks}>Delete All Tasks</Button>
+            </div>
         </div>
 
         <div>
@@ -472,7 +421,12 @@ const Tasks = () => {
         </div>
         </div>
 
-        {renderHistoryDrawer()}
+        {/* {renderHistoryDrawer()} */}
+        {<RenderHistory 
+        dummyHistory={dummyHistory}
+        drawerOpen={drawerOpen}
+        setDrawerOpen={setDrawerOpen}
+        />}
 
 
         {renderEditDrawer()}
