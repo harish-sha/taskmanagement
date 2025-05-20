@@ -9,12 +9,18 @@ import UserDashboards from '../pages/User/UserDashboards';
 import Roles from '../pages/Admin/Roles';
 import Dummy from '../dummy/Dummy';
 import PrivateRoute from '../auth/PrivateRoute';
+import { useAuth } from '../context/AuthContext';
+import Tasks from '../pages/Admin/Tasks';
+import Calendar from '../pages/Admin/Calendar';
+import Analytics from '../pages/Admin/Analytics';
 import ManagerTask from '../pages/Manager/ManagerTask';
 import ManagerCalendar from '../pages/Manager/ManagerCalendar';
 
 const AppRoutes = () => {
+
     return (
         <Routes>
+            <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
 
             {/* Admin */}
@@ -24,7 +30,11 @@ const AppRoutes = () => {
                 </PrivateRoute>
             }>
                 <Route index element={<AdminDashboard />} />
+                <Route path="dashboard" element={<AdminDashboard />} />
                 <Route path="manageroles" element={<Roles />} />
+                <Route path="tasks" element={<Tasks />} />
+                <Route path="calendar" element={<Calendar />} />
+                <Route path="analytics" element={<Analytics />} />
             </Route>
 
             {/* Manager */}

@@ -4,13 +4,16 @@ import { IconButton, Drawer, Box, Typography, FormControl, InputLabel, Select, M
 import CustomTooltip from "../../components/common/CustomTooltip";
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@mui/joy';
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import UniversalButton from "../../components/common/UniversalButton";
 import CreateUser from '../../components/UserModel/CreateUser';
 import AssignTask from '../../components/UserModel/AssignTask';
+import RenderHistory from '../../components/Miscellaneous/RenderHistory';
+import toast from 'react-hot-toast';
 
-const Roles = () => {
+const Tasks = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [editDrawerOpen, setEditDrawerOpen] = useState(false);
     const [userEditDrawerOpen, setUserEditDrawerOpen] = useState(false);
@@ -27,6 +30,7 @@ const Roles = () => {
     const [imageCaptions, setImageCaptions] = useState([]);
     const [openCreateUser, setOpenCreateUser] = useState(false)
     const [assignTask, setAssignTask] = useState(false)
+    
 
     const handleImageChange = (e) => {
     const files = e.target.files;
@@ -51,15 +55,15 @@ const Roles = () => {
     setImageCaptions(newCaptions);
   };
 
+  const handleDeleteTask = () => {
+    toast.success("You have deleted the task")
+  }
+
   const handleSubmit = () => {
     // Submit the updated user details logic
     console.log("User Details Updated", { userName, userEmail, userRole, imageUpload, imageCaptions });
   };
 
-      const handleEditUser = (row) => {
-        setSelectedRow(row);
-        setUserEditDrawerOpen(true); // Open the edit drawer
-      };
 
       const handleEditTask = (row) => {
         setSelectedRow(row);
@@ -72,6 +76,10 @@ const Roles = () => {
         setTaskIdForIssue(row.id);
         setDrawerOpen(true);
       };
+
+      const handleDeleteAllTasks = () => {
+        toast.success("All tasks deleted 😮")
+      }
     
       const handleReportIssue = () => {
         const newIssue = {
@@ -100,75 +108,6 @@ const Roles = () => {
         setEditDrawerOpen(false);
         toast.success("Issue reported successfully!");
       };
-    
-    //   const handleImageChange = (e) => {
-    //     const files = Array.from(e.target.files);
-    //     const newImageUploads = [...imageUpload, ...files];
-    //     const newImageCaptions = [...imageCaptions, ...files.map(() => "")];
-    
-    //     setImageUpload(newImageUploads);
-    //     setImageCaptions(newImageCaptions);
-    //   };
-
-      const columns = [
-        { field: "sn", headerName: "S.No", flex: 0, minWidth: 80 },
-        { field: "users", headerName: "Users", flex: 1, minWidth: 120 },
-        {
-          field: "password",
-          headerName: "Password",
-          flex: 1,
-          minWidth: 120,
-        },
-        {
-          field: "role",
-          headerName: "Role",
-          flex: 1,
-          minWidth: 120,
-        },
-        {
-          field: "action",
-          headerName: "Action",
-          flex: 1,
-          minWidth: 150,
-          renderCell: (params) => (
-            <>
-              <CustomTooltip title="Edit User" placement="top" arrow>
-                <IconButton
-                  className="text-xs"
-                  onClick={() => handleEditUser(params.row)}
-                >
-                  <EditIcon sx={{ fontSize: "1.2rem", color: "orange" }} />
-                </IconButton>
-              </CustomTooltip>
-              {/* <CustomTooltip title="Edit Task" placement="top" arrow>
-                    <IconButton
-                      className="text-xs"
-                      onClick={() => handleEdit(params.row)}
-                    >
-                      <VisibilityIcon sx={{ fontSize: "1.2rem", color: "green" }} />
-                    </IconButton>
-                  </CustomTooltip> */}
-            </>
-          ),
-        },
-      ];
-    
-      const rows = [
-        {
-          id: 1,
-          sn: 1,
-          users: "manager",
-          password: "manager123",
-          role: "manager",
-        },
-        {
-           id: 2,
-           sn: 2,
-           users: "user",
-           password: "user123",
-           role: "user",
-        },
-      ];
 
       const TaskColumns = [
           { field: "sn", headerName: "S.No", flex: 0, minWidth: 80 },
@@ -209,6 +148,14 @@ const Roles = () => {
                     onClick={() => handleEditTask(params.row)}
                   >
                     <EditIcon sx={{ fontSize: "1.2rem", color: "orange" }} />
+                  </IconButton>
+                </CustomTooltip>
+                <CustomTooltip title="Delete Task" placement="top" arrow>
+                  <IconButton
+                    className="text-xs"
+                    onClick={() => handleDeleteTask(params.row)}
+                  >
+                    <DeleteIcon sx={{ fontSize: "1.2rem", color: "red" }} />
                   </IconButton>
                 </CustomTooltip>
               </>
@@ -449,201 +396,40 @@ const Roles = () => {
             </Drawer>
           );
 
-        const renderUserDetailsEditDrawer = () => (
-           <Drawer
-            anchor="right"
-            open={userEditDrawerOpen}
-            onClose={() => setUserEditDrawerOpen(false)}
-            >
-            <Box className="p-4 w-[45rem]">
-            <Typography
-            variant="h6"
-            sx={{ mb: 2, fontWeight: "600", color: "#333" }}
-            >
-            Edit User Details
-            </Typography>
-
-        {/* Name Field */}
-        <TextField
-          label="Name"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          fullWidth
-          variant="outlined"
-          sx={{ mb: 3 }}
-        />
-
-        {/* Email Field */}
-        <TextField
-          label="Email"
-          value={userEmail}
-          onChange={(e) => setUserEmail(e.target.value)}
-          fullWidth
-          variant="outlined"
-          sx={{ mb: 3 }}
-        />
-
-        {/* Role Dropdown */}
-        <FormControl variant="outlined" fullWidth sx={{ mb: 3 }}>
-          <InputLabel>Role</InputLabel>
-          <Select
-            value={userRole}
-            onChange={(e) => setUserRole(e.target.value)}
-            label="Role"
-            sx={{
-              borderRadius: "8px",
-              backgroundColor: "#fff",
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "8px",
-              },
-            }}
-          >
-            <MenuItem value="Admin">Admin</MenuItem>
-            <MenuItem value="User">User</MenuItem>
-            <MenuItem value="Manager">Manager</MenuItem>
-          </Select>
-        </FormControl>
-
-        <FormControl variant="outlined" fullWidth sx={{ mb: 3 }}>
-          <InputLabel>Assign User</InputLabel>
-          <Select
-            value={assignUser}
-            onChange={(e) => setAssignUser(e.target.value)}
-            label="Assign User"
-            sx={{
-              borderRadius: "8px",
-              backgroundColor: "#fff",
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "8px",
-              },
-            }}
-          >
-            <MenuItem value="Manager 1">Manager 1</MenuItem>
-            <MenuItem value="Manager 2">Manager 2</MenuItem>
-          </Select>
-        </FormControl>
-
-        {/* Profile Picture Upload */}
-        <Button
-          variant="outlined"
-          color="primary"
-          component="label"
-          startIcon={<AddPhotoAlternateIcon />}
-          sx={{
-            mb: 2,
-            textTransform: "none",
-            padding: "8px 16px",
-            borderRadius: "8px",
-            display: "flex",
-            alignItems: "center",
-            backgroundColor: "#fff",
-            border: "1px solid #ccc",
-            "&:hover": { backgroundColor: "#e8e8e8" },
-          }}
-        >
-          Upload Profile Picture
-          <input
-            type="file"
-            hidden
-            onChange={handleImageChange}
-            multiple
-          />
-        </Button>
-
-        {/* Image Upload Previews */}
-        <Box
-          sx={{
-            display: "grid",
-            maxHeight: "600px",
-            overflowY: "auto",
-            gap: 2,
-          }}
-        >
-          {imageUpload.length > 0 &&
-            imageUpload.map((image, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "8px",
-                  borderRadius: "8px",
-                  backgroundColor: "#fff",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                }}
-              >
-                <img
-                  src={URL.createObjectURL(image)}
-                  alt={`Preview ${index + 1}`}
-                  style={{
-                    maxWidth: "150px",
-                    height: "auto",
-                    marginRight: "12px",
-                    borderRadius: "4px",
-                  }}
-                />
-                <Box flex={1}>
-                  <TextField
-                    label={`Image ${index + 1} Caption`}
-                    value={imageCaptions[index]}
-                    onChange={(e) => handleCaptionChange(index, e.target.value)}
-                    fullWidth
-                    variant="outlined"
-                    sx={{
-                      borderRadius: "4px",
-                      backgroundColor: "#f8f8f8",
-                      mb: 1,
-                    }}
-                  />
-                </Box>
-                <IconButton
-                  onClick={() => handleDeleteImage(index)}
-                  sx={{ color: "red" }}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Box>
-            ))}
-        </Box>
-
-        {/* Submit Button */}
-        <div className="flex items-center justify-center">
-          <Button>
-            Save Changes
-          </Button>
-        </div>
-      </Box>
-    </Drawer>
-          );
 
     return (
         <>
         <div className='flex flex-col gap-4'>
         <div className='text-2xl font-semibold flex justify-between items-center mb-4 '>
-            <h1>Manage Users</h1>
-            <Button onClick={()=>setOpenCreateUser(true)}>Add User</Button>  
+            <h1>Manage Tasks</h1>
+            <div className='flex gap-2'>
+            <Button onClick={()=>setAssignTask(true)}>Assign Task </Button>
+            <Button onClick={handleDeleteAllTasks}>Delete All Tasks</Button>
+            </div>
         </div>
+
         <div>
+        {/* <h1 className="text-xl font-semibold text-gray-700 flex items-center justify-start mb-4 underline">
+          Manage Tasks
+        </h1> */}
         <DataTable
-          id="userstableManager"
-          name="userstableManager"
-          col={columns}
-          rows={rows}
+          id="taskHistorytableManager"
+          name="taskHistorytableManager"
+          col={TaskColumns}
+          rows={TaskRows}
         />
         </div>
         </div>
 
+        {/* {renderHistoryDrawer()} */}
+        {<RenderHistory 
+        dummyHistory={dummyHistory}
+        drawerOpen={drawerOpen}
+        setDrawerOpen={setDrawerOpen}
+        />}
+
 
         {renderEditDrawer()}
-
-        {renderUserDetailsEditDrawer()}
-
-        {
-            <CreateUser 
-            setOpenCreateUser={setOpenCreateUser}
-            openCreateUser={openCreateUser}/>
-        }
 
         {
             <AssignTask 
@@ -654,4 +440,4 @@ const Roles = () => {
     )
 }
 
-export default Roles
+export default Tasks
