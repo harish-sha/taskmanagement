@@ -82,64 +82,7 @@ const Login = () => {
     // };
 
 
-
-    // return (
-    //     <div className="min-h-screen flex justify-center items-center bg-gray-100 ">
-    //         <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl overflow-hidden p-8 ">
-    //             <form
-    //                 onSubmit={handleSubmit}
-    //                 className="space-y-5"
-    //             >
-    //                 <h2 className="text-2xl font-bold text-center mb-4 text-gray-900">Login</h2>
-    //                 <InputField
-    //                     label='Enter Username'
-    //                     type="text"
-    //                     placeholder="Username"
-    //                     required
-    //                     value={username}
-    //                     onChange={(e) => setUsername(e.target.value)}
-    //                     className="w-full p-2 border rounded text-md"
-
-    //                 />
-    //                 <div className="relative mb-4">
-    //                     <InputField
-    //                         id="password"
-    //                         name="password"
-    //                         label="Enter Password"
-    //                         type={showPassword ? "text" : "password"}
-    //                         required
-    //                         value={password}
-    //                         onChange={(e) => setPassword(e.target.value)}
-    //                         placeholder="Enter your password"
-    //                         className="w-full p-2 border rounded text-md"
-    //                     />
-    //                     <span
-    //                         className="absolute inset-y-0 right-3 flex items-center text-gray-400 cursor-pointer"
-    //                         style={{ top: "32px" }}
-    //                         onClick={() => setShowPassword(!showPassword)}
-    //                     >
-    //                         {showPassword ? (
-    //                             <VisibilityOutlinedIcon />
-    //                         ) : (
-    //                             <VisibilityOffOutlinedIcon />
-    //                         )}
-    //                     </span>
-    //                 </div>
-
-    //                 <div className="flex items-center justify-center" >
-    //                     <UniversalButton
-    //                         label={loading ? "Logging in..." : "Login"}
-    //                         variant="primary"
-    //                         type="submit"
-    //                         disabled={loading}
-    //                     />
-    //                 </div>
-    //             </form>
-
-    //         </div>
-
-    //     </div>
-    // );
+    
 
     return (
         <div className="min-h-screen w-full flex items-center justify-center bg-[#7f9ac8] relative ">
