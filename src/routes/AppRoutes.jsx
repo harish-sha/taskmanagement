@@ -13,7 +13,8 @@ import { useAuth } from '../context/AuthContext';
 import Tasks from '../pages/Admin/Tasks';
 import Calendar from '../pages/Admin/Calendar';
 import Analytics from '../pages/Admin/Analytics';
-
+import ManagerTask from '../pages/Manager/ManagerTask';
+import ManagerCalendar from '../pages/Manager/ManagerCalendar';
 
 const AppRoutes = () => {
 
@@ -41,12 +42,11 @@ const AppRoutes = () => {
                 <PrivateRoute role="manager">
                     <ManagerLayout />
                 </PrivateRoute>
-            }>
+            } >
                 <Route index element={<ManagerDashboard />} />
-                <Route path="dashboard" element={<ManagerDashboard />} />
-                <Route path="manageroles" element={<Roles />} />
-                <Route path="tasks" element={<Tasks />} />
-                <Route path="calendar" element={<Calendar />} />
+                <Route path='dashboard' element={<ManagerDashboard />} />
+                <Route path='task' element={<ManagerTask />} />
+                <Route path='calendar' element={<ManagerCalendar />} />
             </Route>
 
             {/* User */}
