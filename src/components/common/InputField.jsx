@@ -16,7 +16,8 @@ const InputField = ({
     tooltipPlacement = "top",
     readOnly = false,
     style,
-    maxLength
+    maxLength,
+    required = false
 }) => {
     // const handleChange = (e) => {
     //     let inputValue = e.target.value;
@@ -55,6 +56,7 @@ const InputField = ({
                 readOnly={readOnly}
                 style={style}
                 maxLength={maxLength}
+                required={required}
                 className={`block w-full  p-1.5 h-[2.275rem] border bg-white rounded-md shadow-sm focus:ring-0 focus:shadow focus:ring-gray-300 focus:outline-none sm:text-sm ${error ? "border-red-500" : "border-gray-300"
                     }`}
             />
