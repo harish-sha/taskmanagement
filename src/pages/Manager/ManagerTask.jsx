@@ -633,5 +633,3 @@ const handleEdit = () => {
 
 export default ManagerTask
 
-// 
-// 

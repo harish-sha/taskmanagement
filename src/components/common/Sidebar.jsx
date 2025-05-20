@@ -160,7 +160,7 @@ const Sidebar = ({ role = "admin", user = { username: "Admin", role: "admin" } }
       icon: FiShoppingCart,
       roles: ["admin", "manager"],
       dropdownItems: [
-        { label: "Add Product", route: "/products/add" },
+        { label: "Add Product", route: "products/add" },
         { label: "Manage Products", route: "/products/manage" },
         { label: "Product Categories", route: "/products/categories" },
       ],
