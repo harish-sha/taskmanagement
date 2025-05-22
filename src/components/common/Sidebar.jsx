@@ -112,7 +112,7 @@
 
 // export default Sidebar;
 
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import {
   FiBarChart,
   FiChevronDown,
@@ -135,12 +135,19 @@ import { useAuth } from "../../context/AuthContext";
 import UserProfile from "../Miscellaneous/UserProfile";
 
 
+
+
+
 const Sidebar = ({ role = "admin" }) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
   const [profileDialogOpen, setProfileDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { logout, user } = useAuth();
+
+
+
+  
   const handleLogout = () => {
     logout();
     toast.success("You have successfully logged out!");
@@ -148,7 +155,7 @@ const Sidebar = ({ role = "admin" }) => {
 
   const navItems = [
     { label: "Dashboard", icon: FiHome, roles: ["admin", "manager"], route: "dashboard" },
-    { label: "Tasks", icon: FiTag, roles: ["admin", "manager", "user"], route: "tasks" },
+    { label: "Tasks", icon: FiTag, roles: ["admin", "manager", "user"], route: "task" },
     { label: "Calendar", icon: FiMonitor, roles: ["admin", "manager", "user"], route: "calendar" },
     { label: "Users", icon: FiUsers, roles: ["admin"], route: "/admin/manageroles" },
     { label: "Analytics", icon: FiBarChart, roles: ["admin"], route: "/admin/analytics" },
@@ -172,11 +179,28 @@ const Sidebar = ({ role = "admin" }) => {
     <>
       <motion.nav
         layout
-        className={`sticky top-0 left-0 h-screen z-50 shrink-0 border-r border-slate-300 bg-white p-2 `}
+        // className={`sticky top-0 left-0 h-screen z-50 shrink-0 border-r border-slate-300 bg-white p-2   `}
+        // style={{
+        //   width: open ? "225px" : "fit-content",
+        // }} 
+  
+//  className={`fixed md:relative top-0 left-0 h-screen z-50 shrink-0 border-r border-slate-300 bg-white p-2 transition-transform duration-300 ease-in-out ${
+//           open ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+//         }`}
+//         style={{
+//           width: open ? "225px" : "fit-content",
+//         }}
+
+
+        className={`fixed md:relative top-0 left-0 h-screen z-[1000] shrink-0 border-r border-slate-300 bg-white p-2`}
         style={{
-          width: open ? "225px" : "fit-content",
-        }}
+          width: open ? "225px" : "60px",
+          // transform: "none",  
+          minWidth: "60px",
+        }} 
       >
+
+     
         <TitleSection
           open={open}
           role={role}
@@ -206,6 +230,9 @@ const Sidebar = ({ role = "admin" }) => {
         </div>
       </motion.nav>
 
+
+
+ 
       {/* <Dialog
         visible={profileDialogOpen}
         onHide={() => setProfileDialogOpen(false)} // Close the dialog
@@ -221,6 +248,8 @@ const Sidebar = ({ role = "admin" }) => {
           </Typography>
         </Box>
       </Dialog> */}
+
+    
       <UserProfile
       profileDialogOpen={profileDialogOpen}
       setProfileDialogOpen={setProfileDialogOpen}
@@ -398,3 +427,4 @@ const ToggleClose = ({ open, setOpen }) => {
 };
 
 export default Sidebar;
+

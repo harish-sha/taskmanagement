@@ -1,29 +1,46 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { DataTable } from "../../components/common/DataTable";
-import CustomTooltip from '../../components/common/CustomTooltip';
+import CustomTooltip from "../../components/common/CustomTooltip";
 import UniversalButton from "../../components/common/UniversalButton";
-import { IconButton } from '@mui/material';
-import {Drawer ,Button, Box , Typography, FormControl,InputLabel,Select, MenuItem,TextField} from '@mui/material'
-import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
+import { IconButton } from "@mui/material";
+import {
+  Drawer,
+  Button,
+  Box,
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
+} from "@mui/material";
+import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import toast from "react-hot-toast";
-
+import { color } from "framer-motion";
+import AnimatedDropdown from "../../components/common/AnimatedDropdown";
+import InputField from "../../components/common/InputField";
+import { Calendar } from "primereact/calendar";
+import CloseIcon from '@mui/icons-material/Close';
 
 
 const ManagerTask = () => {
- const [taskDialogOpen,setTaskDialogOpen] = useState(false)
-const [historydrawerOpen,setHistoryDrawerOpen] = useState(false)
-const [editDrawerOpen,setEditDrawerOpen] = useState(false)
+  const [taskDialogOpen, setTaskDialogOpen] = useState(false);
+  const [historydrawerOpen, setHistoryDrawerOpen] = useState(false);
+  const [editDrawerOpen, setEditDrawerOpen] = useState(false);
   const [taskStatus, setTaskStatus] = useState("Pending");
 
-
- const [imageUpload, setImageUpload] = useState([]);
+  const [imageUpload, setImageUpload] = useState([]);
   const [issueText, setIssueText] = useState("");
+    const [imageCaptions, setImageCaptions] = useState([]);
 
 
-// New state for tasks
+
+  // New state for tasks
   const [rows, setRows] = useState([
     {
       id: 1,
@@ -36,11 +53,9 @@ const [editDrawerOpen,setEditDrawerOpen] = useState(false)
       priority: "High",
       status: "Pending",
     },
-
   ]);
 
-
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
   // New Task Dialog fields
   const [newTask, setNewTask] = useState({
     task: "",
@@ -57,13 +72,11 @@ const [editDrawerOpen,setEditDrawerOpen] = useState(false)
     { label: "user 4", value: "user4" },
   ];
 
-
- const priorityOptions = [
+  const priorityOptions = [
     { label: "high", value: "High" },
     { label: "medium", value: "Medium" },
     { label: "low", value: "Low" },
-  ]; 
-
+  ];
 
   const columns = [
     { field: "sn", headerName: "S.No", flex: 0, minWidth: 80 },
@@ -107,14 +120,19 @@ const [editDrawerOpen,setEditDrawerOpen] = useState(false)
               <EditIcon sx={{ fontSize: "1.2rem", color: "orange" }} />
             </IconButton>
           </CustomTooltip>
+           <CustomTooltip title="Delete Task" placement="top" arrow>
+                  <IconButton
+                    className="text-xs"
+                    onClick={() => handleDeleteTask(params.row)}
+                  >
+                    <DeleteIcon sx={{ fontSize: "1.2rem", color: "red" }} />
+                  </IconButton>
+                </CustomTooltip>
         </>
       ),
     },
   ];
 
-
-
- 
   const handleTaskInputChange = (e) => {
     const { name, value } = e.target;
     setNewTask((prev) => ({
@@ -151,7 +169,40 @@ const [editDrawerOpen,setEditDrawerOpen] = useState(false)
   };
 
 
+  const handleDeleteTask = () => {
+    toast.success("You have deleted the task")
+  }
 
+
+    const handleDeleteAllTasks = () => {
+        toast.success("All tasks deleted")
+      }
+
+
+    const handleImageChange = (e) => {
+    const files = e.target.files;
+    if (files) {
+      setImageUpload([...imageUpload, ...files]);
+    }
+  };
+
+
+  const handleCaptionChange = (index, value) => {
+    const newCaptions = [...imageCaptions];
+    newCaptions[index] = value;
+    setImageCaptions(newCaptions);
+  };
+
+
+  const handleDeleteImage = (index) => {
+    const newImages = [...imageUpload];
+    newImages.splice(index, 1);
+    setImageUpload(newImages);
+
+    const newCaptions = [...imageCaptions];
+    newCaptions.splice(index, 1);
+    setImageCaptions(newCaptions);
+  };
 
   // const rows = [
   //   {
@@ -177,7 +228,6 @@ const [editDrawerOpen,setEditDrawerOpen] = useState(false)
   //     status: "Pending",
   //   },
   // ];
-
 
   const dummyHistory = [
     {
@@ -242,19 +292,23 @@ const [editDrawerOpen,setEditDrawerOpen] = useState(false)
     },
   ];
 
-
-
- const renderHistoryDrawer = () => (
+  const renderHistoryDrawer = () => (
     <Drawer
       anchor="right"
       open={historydrawerOpen}
       onClose={() => setHistoryDrawerOpen(false)}
-      sx={{ width: "400px" }}
+      // sx={{ width: "100px" }}
     >
-      <Box p={3} className="w-[60rem]" >
-        <h1 className="text-2xl font-semibold mb-5">
-          Task History
-        </h1>
+      <Box p={3} className="w-screen md:w-[45rem] lg:w-[60rem]">
+        <div className="flex items-center justify-between mb-5">
+        <h1 className="text-2xl font-semibold ">Task History</h1>
+        <CloseIcon 
+        onClick={() => setHistoryDrawerOpen(false)}
+        sx={{
+          color:"gray"
+        }}
+        />
+        </div>
         <Box
           sx={{
             maxHeight: "500px",
@@ -299,13 +353,19 @@ const [editDrawerOpen,setEditDrawerOpen] = useState(false)
                   >
                     {index + 1}
                   </td>
-                  <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
+                  <td
+                    style={{ padding: "8px", borderBottom: "1px solid #ddd" }}
+                  >
                     {history.date}
                   </td>
-                  <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
+                  <td
+                    style={{ padding: "8px", borderBottom: "1px solid #ddd" }}
+                  >
                     {history.action}
                   </td>
-                  <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
+                  <td
+                    style={{ padding: "8px", borderBottom: "1px solid #ddd" }}
+                  >
                     {history.updatedBy || "User"} {/* Default to "User" */}
                   </td>
                 </tr>
@@ -317,24 +377,26 @@ const [editDrawerOpen,setEditDrawerOpen] = useState(false)
     </Drawer>
   );
 
-
- 
-
-
   const renderEditDrawer = () => (
     <Drawer
       anchor="right"
       open={editDrawerOpen}
       onClose={() => setEditDrawerOpen(false)}
     >
-      <Box className="p-4 w-[45rem]">
+      <Box p={3} className="w-screen md:w-[35rem] lg:w-[60rem]">
+       <div className="flex items-center justify-between mb-5">
         <Typography
           variant="h6"
-          sx={{ mb: 2, fontWeight: "600", color: "#333" }}
+          sx={{ fontWeight: "600", color: "#333" }}
         >
           Edit Task
         </Typography>
 
+        <CloseIcon 
+        onClick={() => setEditDrawerOpen(false)}
+        sx={{color:"gray"}}
+        />
+</div>
         {/* Status Dropdown */}
         <FormControl variant="outlined" fullWidth sx={{ mb: 3 }}>
           <InputLabel>Status</InputLabel>
@@ -424,7 +486,6 @@ const [editDrawerOpen,setEditDrawerOpen] = useState(false)
               </Box>
             ))} */}
 
-
         <Box
           sx={{
             display: "grid",
@@ -482,26 +543,20 @@ const [editDrawerOpen,setEditDrawerOpen] = useState(false)
             ))}
         </Box>
 
-        <div className="flex items-center justify-center" >
-
-          <UniversalButton
-            onClick={handleReportIssue}
-            label="Submit"
-          />
+        <div className="flex items-center justify-center">
+          <UniversalButton onClick={handleReportIssue} label="Submit" />
         </div>
-
       </Box>
     </Drawer>
   );
 
-const handleView = () => {
-    setHistoryDrawerOpen(true)
- }
+  const handleView = () => {
+    setHistoryDrawerOpen(true);
+  };
 
-
-const handleEdit = () => {
-    setEditDrawerOpen(true)
-}
+  const handleEdit = () => {
+    setEditDrawerOpen(true);
+  };
 
   const handleReportIssue = () => {
     const newIssue = {
@@ -531,105 +586,125 @@ const handleEdit = () => {
     toast.success("Issue reported successfully!");
   };
 
-
   return (
     <>
-    <h1 className='text-center font-bold text-2xl'>Tasks</h1>
-    <div className='flex justify-end'>
-   <button onClick={() => setTaskDialogOpen(true)} className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-white font-medium shadow-md cursor-pointer">
-            + New Task
-          </button>
-    </div>
-    
-        <Dialog
+      <h1 className="text-center font-bold text-2xl">Tasks</h1>
+      <div className="flex justify-center md:justify-end  gap-2 mt-2">
+        <UniversalButton
+        label="+ New Task"
+          onClick={() => setTaskDialogOpen(true)}
+          className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-white font-medium shadow-md cursor-pointer"
+        />
+          
+       
+
+        <UniversalButton
+          label="Delete All Tasks"
+          onClick={handleDeleteAllTasks}
+          variant="danger"
+        />
+      </div>
+
+      <Dialog
         visible={taskDialogOpen}
         onHide={() => setTaskDialogOpen(false)} // Close the dialog
         header="Create Task"
         style={{ width: "500px" }}
       >
         <div className="space-y-4 mt-3">
-          <TextField
-            label="Task"
-            name="task"
-            value={newTask.task}
-            onChange={handleTaskInputChange}
-            fullWidth
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="Assigned Date"
-            name="assignedDate"
-            type="date"
-            value={newTask.assignedDate}
-            onChange={handleTaskInputChange}
-            InputLabelProps={{ shrink: true }}
-            inputProps={{ min: today }}
-            fullWidth
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="Due Date"
-            name="dueDate"
-            type="date"
-            value={newTask.dueDate}
-            onChange={handleTaskInputChange}
-            InputLabelProps={{ shrink: true }}
-            fullWidth
-            sx={{ mb: 2 }}
-          />
+    
+           <InputField
+    id="taskId"
+    name="task"
+    value={newTask.task}
+    onChange={handleTaskInputChange}
+    placeholder="Task"
+    label="Task"
+  />
          
-         <FormControl fullWidth sx={{ mb: 2 }}>
-           <InputLabel id="priority-label">Priority</InputLabel>
-            <Select
-              labelId="priority-label"
-              name="priority"
-              value={newTask.priority}
-              label="Priority"
-              onChange={handleTaskInputChange}
-            >
-              {priorityOptions.map((priority) => (
-                <MenuItem key={priority.value} value={priority.value}>
-                  {priority.label}
-                </MenuItem>
-              ))}
-            </Select>
-         </FormControl>
+
+         <Calendar
+    value={newTask.assignedDate}
+    onChange={(e) =>
+      setNewTask((prev) => ({ ...prev, assignedDate: e.value }))
+    }
+    minDate={new Date()}
+    showIcon
+    dateFormat="dd-mm-yy"
+    placeholder="Assigned Date"
+    style={{ width: "100%", marginBottom: "16px" , height:"2.3rem" }}
+  />
+
+
+           <Calendar
+    value={newTask.dueDate}
+    onChange={(e) =>
+      setNewTask((prev) => ({ ...prev, dueDate: e.value }))
+    }
+    minDate={new Date()}
+    showIcon
+    dateFormat="dd-mm-yy"
+    placeholder="Due Date"
+    style={{ width: "100%", marginBottom: "16px" , height:"2.3rem"}}
+  />
 
           <FormControl fullWidth sx={{ mb: 2 }}>
-            <InputLabel id="assignedTo-label">Assign To</InputLabel>
-            <Select
-              labelId="assignedTo-label"
-              name="assignedTo"
-              value={newTask.assignedTo}
-              label="Assign To"
-              onChange={handleTaskInputChange}
-            >
-              {userOptions.map((user) => (
-                <MenuItem key={user.value} value={user.value}>
-                  {user.label}
-                </MenuItem>
-              ))}
-            </Select>
+           
+
+               <AnimatedDropdown
+      id="priority"
+      name="priority"
+      options={priorityOptions}
+      value={newTask.priority}
+      onChange={(selectedValue) =>
+        setNewTask((prev) => ({
+          ...prev,
+          priority: selectedValue,
+        }))
+      }
+      placeholder="Priority"
+      label="Priority"
+    />
           </FormControl>
-          <UniversalButton label="Save" onClick={handleSaveTask} />
+
+          <FormControl fullWidth sx={{ mb: 2 }}>
+           
+
+             <AnimatedDropdown
+      id="assignedTo"
+      name="assignedTo"
+      options={userOptions}
+      value={newTask.assignedTo}
+      onChange={(selectedValue) =>
+        setNewTask((prev) => ({
+          ...prev,
+          assignedTo: selectedValue,
+        }))
+      }
+      placeholder="Assign To"
+      label="Assign To"
+    />
+          </FormControl>
+         
+           <div className=" flex items-center justify-center">
+              <UniversalButton label="Save" onClick={handleSaveTask} />
+              </div>
         </div>
       </Dialog>
 
-<div className='mt-4'> 
-  <DataTable
+      <div className="mt-4">
+        <DataTable
           id="taskHistorytableManager"
           name="taskHistorytableManager"
           col={columns}
           rows={rows}
         />
-</div>
-    
+      </div>
 
-         {renderHistoryDrawer()}
-         {renderEditDrawer()}
+      {renderHistoryDrawer()}
+      {renderEditDrawer()}
     </>
-  )
-}
+  );
+};
 
-export default ManagerTask
-
+export default ManagerTask;
