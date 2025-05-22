@@ -35,15 +35,6 @@ const AssignTask = ({ setAssignTask, assignTask }) => {
       }));
   };
 
-  const handleDropdownChange = (name, selectedValue) => {
-  setFormData((prev) => ({
-    ...prev,
-    [name]: selectedValue === "no-selection" ? "" : selectedValue,
-  }));
-};
-
-
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -191,14 +182,19 @@ const AssignTask = ({ setAssignTask, assignTask }) => {
                 id="priority"
                 name="priority"
                 label="Priority"
-                value={formData.priority}
-                placeholder="Select Priority..."
                 options={[
                   { label: "High", value: "high" },
                   { label: "Medium", value: "medium" },
                   { label: "Low", value: "low" },
                 ]}
-                onChange={handleDropdownChange}
+                value={formData.priority}
+                placeholder="Select Priority..."
+                onChange={(selectedValue) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  priority: selectedValue,
+                }))
+              }
               />
               {errors.priority && <p className="text-red-500 text-sm">{errors.priority}</p>}
             </div>
@@ -215,7 +211,12 @@ const AssignTask = ({ setAssignTask, assignTask }) => {
                 { label: "In Progress", value: "in-progress" },
                 { label: "Completed", value: "completed" },
               ]}
-              onChange={handleDropdownChange}
+              onChange={(selectedValue) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  status: selectedValue,
+                }))
+              }
             />
               {errors.status && <p className="text-red-500 text-sm">{errors.status}</p>}
             </div>

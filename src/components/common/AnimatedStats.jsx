@@ -47,7 +47,7 @@ const AnimatedStats = () => {
       {stats.map((s, i) => (
         <motion.div
           key={i}
-          className={`p-5 ${s.bg_color} rounded-xl shadow-lg flex items-start gap-4`}
+          className={`p-5 ${s.bg_color} rounded-xl shadow-lg flex items-start gap-4 flex-wrap break-words`}
           whileHover={{ scale: 1.03 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

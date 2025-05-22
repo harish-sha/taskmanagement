@@ -19,8 +19,11 @@ const AnimatedDropdown = ({
     disabled
 }) => {
    const handleChange = (selectedValue) => {
-    const finalValue = selectedValue === "no-selection" ? "" : selectedValue;
-    onChange(name, finalValue);
+        if (selectedValue === "no-selection") {
+            onChange("");
+        } else {
+            onChange(selectedValue);
+        }
 };
 
     return (

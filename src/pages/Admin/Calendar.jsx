@@ -109,7 +109,7 @@ const Calendar = () => {
                 >
                   📌 Set Reminder
                 </Typography>
-                {/* <FormControl size="small" sx={{ minWidth: isXs ? "100%" : 140 }}>
+                <FormControl size="small" sx={{ minWidth: isXs ? "100%" : 140 }}>
                   <InputLabel>Status</InputLabel>
                   <Select
                     value={filter}
@@ -121,7 +121,7 @@ const Calendar = () => {
                     <MenuItem value="Pending">Normal</MenuItem>
                     <MenuItem value="Completed">Urgent</MenuItem>
                   </Select>
-                </FormControl> */}
+                </FormControl>
               </Box>
 
               {/* Calendar */}

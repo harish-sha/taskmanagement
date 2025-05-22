@@ -629,7 +629,11 @@ const Roles = () => {
         <div className='flex flex-col gap-4'>
         <div className='text-2xl font-semibold flex justify-between items-center mb-4 '>
             <h1>Manage Users</h1>
-            <Button onClick={()=>setOpenCreateUser(true)}>Add User</Button>  
+            <UniversalButton 
+            label="+ Add User"
+            type='submit'
+            onClick={()=>setOpenCreateUser(true)}
+            />  
         </div>
         <div>
         <DataTable

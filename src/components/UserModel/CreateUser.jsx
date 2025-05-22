@@ -3,6 +3,8 @@ import toast from 'react-hot-toast';
 import UniversalButton from '../common/UniversalButton';
 import InputField from '../common/InputField';
 import AnimatedDropdown from '../common/AnimatedDropdown';
+import CloseIcon from '@mui/icons-material/Close';
+import { IconButton } from "@mui/material";
 
 const CreateUser = ({ setOpenCreateUser, openCreateUser }) => {
   const [formData, setFormData] = useState({
@@ -72,8 +74,19 @@ const CreateUser = ({ setOpenCreateUser, openCreateUser }) => {
       {openCreateUser && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800/10 bg-opacity-50 z-50">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
-            <h2 className="text-2xl font-semibold text-center mb-6">Create New User</h2>
-
+            <div className='flex justify-between items-center'>
+            <h2 className="text-2xl font-semibold text-center">Create New User</h2>
+            <IconButton
+              onClick={() => setOpenCreateUser(false)}
+              sx={{
+                color: 'gray',
+              }}
+              aria-label="close drawer"
+              size="large"
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+            </div>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <InputField
@@ -146,13 +159,7 @@ const CreateUser = ({ setOpenCreateUser, openCreateUser }) => {
               {errors.priority && <p className="text-red-500 text-sm">{errors.priority}</p>}
             </div>
 
-              <div className="flex justify-between">
-                <UniversalButton
-                  label="Cancel"
-                  type="button"
-                  onClick={() => setOpenCreateUser(false)}
-                  variant="danger"
-                />
+              <div className="flex justify-center items-center">
                 <UniversalButton
                   label="Create User"
                   type="submit"
