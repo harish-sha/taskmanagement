@@ -9,6 +9,8 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import UniversalButton from "../../components/common/UniversalButton";
 import CreateUser from '../../components/UserModel/CreateUser';
 import AssignTask from '../../components/UserModel/AssignTask';
+import DeleteIcon from '@mui/icons-material/Delete';
+import toast from 'react-hot-toast';
 
 const Roles = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -72,6 +74,11 @@ const Roles = () => {
         setTaskIdForIssue(row.id);
         setDrawerOpen(true);
       };
+
+      const handleChanges = () => {
+        toast.success("User Profile updated successfully🎉");
+        setUserEditDrawerOpen(false)
+      }
     
       const handleReportIssue = () => {
         const newIssue = {
@@ -609,7 +616,7 @@ const Roles = () => {
 
         {/* Submit Button */}
         <div className="flex items-center justify-center">
-          <Button>
+          <Button onClick={()=>handleChanges()}>
             Save Changes
           </Button>
         </div>

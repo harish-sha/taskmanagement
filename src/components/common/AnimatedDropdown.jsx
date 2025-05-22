@@ -18,13 +18,11 @@ const AnimatedDropdown = ({
     placeholder = "Select an option...",
     disabled
 }) => {
-    const handleChange = (selectedValue) => {
-        if (selectedValue === "no-selection") {
-            onChange("");
-        } else {
-            onChange(selectedValue);
-        }
-    };
+   const handleChange = (selectedValue) => {
+    const finalValue = selectedValue === "no-selection" ? "" : selectedValue;
+    onChange(name, finalValue);
+};
+
     return (
         <div className="relative w-full">
             {label && (

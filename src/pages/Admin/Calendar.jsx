@@ -21,9 +21,12 @@ import interactionPlugin from "@fullcalendar/interaction";
 import dayjs from "dayjs";
 import toast from 'react-hot-toast';
 
+
+
 const Calendar = () => {
-    const theme = useTheme();
+  const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down("sm")); // small screen check
+  const isMd = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
   const [filter, setFilter] = useState("All");
   const [openModal, setOpenModal] = useState(false);
@@ -31,6 +34,7 @@ const Calendar = () => {
   const [reminderTitle, setReminderTitle] = useState("");
   const [reminderDesc, setReminderDesc] = useState("");
   const [reminderStatus, setReminderStatus] = useState("Pending");
+  
 
   const users = [
     { name: "Alice" },
@@ -105,7 +109,7 @@ const Calendar = () => {
                 >
                   📌 Set Reminder
                 </Typography>
-                <FormControl size="small" sx={{ minWidth: isXs ? "100%" : 140 }}>
+                {/* <FormControl size="small" sx={{ minWidth: isXs ? "100%" : 140 }}>
                   <InputLabel>Status</InputLabel>
                   <Select
                     value={filter}
@@ -114,10 +118,10 @@ const Calendar = () => {
                     size={isXs ? "small" : "medium"}
                   >
                     <MenuItem value="All">All</MenuItem>
-                    <MenuItem value="Pending">Pending</MenuItem>
-                    <MenuItem value="Completed">Completed</MenuItem>
+                    <MenuItem value="Pending">Normal</MenuItem>
+                    <MenuItem value="Completed">Urgent</MenuItem>
                   </Select>
-                </FormControl>
+                </FormControl> */}
               </Box>
 
               {/* Calendar */}
@@ -129,16 +133,14 @@ const Calendar = () => {
               >
                 <FullCalendar
                   plugins={[dayGridPlugin, interactionPlugin]}
-                  initialView={isXs ? "dayGridWeek" : "dayGridMonth"}
+                  initialView={isXs ? "dayGridDay" : "dayGridMonth"} // only day or month view
                   dateClick={handleDateClick}
                   events={filteredEvents}
                   height="100%"
                   headerToolbar={{
                     left: "prev,next today",
                     center: "title",
-                    right: isXs
-                      ? "dayGridWeek,dayGridDay"
-                      : "dayGridMonth,dayGridWeek",
+                    right: "dayGridDay,dayGridMonth", // only day and month buttons
                   }}
                 />
               </Box>

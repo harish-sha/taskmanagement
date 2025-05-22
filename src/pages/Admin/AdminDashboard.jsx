@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 // import Sidebar from '../components/Sidebar';
 import Sidebar from "../../components/common/Sidebar";
+import CloseIcon from '@mui/icons-material/Close';
 
 import { motion } from "framer-motion";
 import FullCalendar from "@fullcalendar/react";
@@ -70,6 +71,7 @@ import { DataTable } from "../../components/common/DataTable";
 import CustomTooltip from "../../components/common/CustomTooltip";
 import UniversalButton from "../../components/common/UniversalButton";
 import Roles from "./Roles";
+import AssignTask from "../../components/UserModel/AssignTask";
 
 ChartJS.register(
   CategoryScale,
@@ -131,7 +133,7 @@ const AdminDashboard = () => {
   const [taskIdForIssue, setTaskIdForIssue] = useState(null);
   const [imageCaptions, setImageCaptions] = useState([]);
   const [taskHistory, setTaskHistory] = useState([]);
-
+  const [assignTask, setAssignTask] = useState(false)
 
 
 
@@ -491,13 +493,28 @@ const AdminDashboard = () => {
         onClose={() => setNotificationDrawerOpen(false)}
         sx={{
           "& .MuiDrawer-paper": {
-            width: "400px",
+            // width: "400px",
             padding: "16px",
             backgroundColor: "#f9fafb",
           },
         }}
       >
         <Box>
+          {/* Close Button */}
+          <IconButton
+            onClick={() => setNotificationDrawerOpen(false)}
+            sx={{
+              position: 'absolute',
+              top: 8,
+              right: 8,
+              color: 'gray',
+              zIndex: 1500,
+            }}
+            aria-label="close drawer"
+            size="large"
+          >
+            <CloseIcon fontSize="inherit" />
+          </IconButton>
           <Typography
             variant="h6"
             sx={{
@@ -945,7 +962,7 @@ const AdminDashboard = () => {
           boxShadow={3}
         >
           <div className="flex items-center justify-center gap-4">
-            <div className="w-20 h-20 mx-auto">
+            <div className="w-20 h-20 mx-auto hidden md:block">
               <lottie-player
                 autoplay
                 loop
@@ -955,16 +972,36 @@ const AdminDashboard = () => {
                 style={{ width: "100%", height: "100%" }}
               ></lottie-player>
             </div>
-            <div className="">
-              <h1 className="text-2xl font-semibold text-gray-700 flex items-center justify-center mb-4">
+            <div className="flex">
+              <div>
+              <h1 className="md:text-2xl text-lg font-semibold text-gray-700 flex items-center justify-center mb-4">
                 Welcome back, "Admin"
               </h1>
-              <h2 className="text-lg text-gray-500">
+              <h2 className="md:text-lg text-sm text-gray-500">
                 Here's what's happening with your workspace today.
               </h2>
+              </div>
+              <div className="relative block md:hidden">
+                <Tooltip title="Notifications" arrow>
+                  <IconButton
+                    onClick={handleOpenNotification}
+                    className="relative"
+                  >
+                    <NotificationsIcon sx={{ color: "#6366f1", fontSize: "24px" }} />
+
+                    {/* Notification Badge */}
+                    <div className="absolute top-1 right-1">
+                      <div className="text-xs bg-red-400 text-white rounded-full h- w-4 flex items-center justify-center">
+                        1
+                      </div>
+                    </div>
+                  </IconButton>
+                </Tooltip>
+              </div>
             </div>
           </div>
-          <Tooltip title="Notifications" arrow >
+          <div className="hidden md:block">
+          <Tooltip title="Notifications" arrow>
             <IconButton onClick={handleOpenNotification} className="flex gap-2" >
               <NotificationsIcon sx={{ color: "#6366f1", fontSize: "30px" }} />
               <div className="absolute top-0 right-1">
@@ -975,6 +1012,7 @@ const AdminDashboard = () => {
               </div>
             </IconButton>
           </Tooltip>
+          </div>
         </Box>
       </motion.div>
       {/* <Grid container spacing={3} mb={4}>
@@ -1020,9 +1058,10 @@ const AdminDashboard = () => {
         >
           <UniversalButton
             label="+ New Task"
+            onClick={()=>setAssignTask(true)}
           />
         </motion.div>
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
@@ -1031,7 +1070,7 @@ const AdminDashboard = () => {
             icon={<AssignmentIndOutlinedIcon sx={{ fontSize: "1.2rem" }} />}
             label="Assign"
           />
-        </motion.div>
+        </motion.div> */}
       </main>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <div className="lg:col-span-2">
@@ -1040,150 +1079,20 @@ const AdminDashboard = () => {
         <ActivityFeed />
       </div>
 
-      <div>
-        <h1 className="text-2xl font-semibold text-gray-700 flex items-center justify-center mb-4">
-          Manage Tasks
-        </h1>
-        <DataTable
-          id="taskHistorytable"
-          name="taskHistorytable"
-          col={columns}
-          rows={rows}
-        />
-      </div>
-
       {renderHistoryDrawer()}
 
       {renderEditDrawer()}
 
       {renderNotificationDrawer()}
-
-      {/* <Grid container spacing={4}>
-        <Grid item xs={12} md={8}>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            <Paper sx={{ p: 3 }} elevation={4}>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                mb={2}
-              >
-                <Typography variant="h6" fontWeight={600}>
-                  📅 Calendar
-                </Typography>
-                <FormControl size="small">
-                  <InputLabel>Status</InputLabel>
-                  <Select
-                    value={filter}
-                    label="Status"
-                    onChange={(e) => setFilter(e.target.value)}
-                  >
-                    <MenuItem value="All">All</MenuItem>
-                    <MenuItem value="Pending">Pending</MenuItem>
-                    <MenuItem value="Completed">Completed</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
-              <FullCalendar
-                plugins={[dayGridPlugin, interactionPlugin]}
-                initialView="dayGridMonth"
-                dateClick={handleDateClick}
-                events={filteredEvents}
-                height={500}
-                headerToolbar={{
-                  left: "prev,next today",
-                  center: "title",
-                  right: "dayGridMonth,dayGridWeek",
-                }}
-              />
-            </Paper>
-          </motion.div>
-        </Grid>
-
-        {/* <Grid item xs={12} md={4}>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className=""
-            >
-              <Paper sx={{ p: 3, height: "100%" }} elevation={4}>
-                <Typography variant="h6" fontWeight={600} mb={2}>
-                  📊 Task Stats
-                </Typography>
-                <Bar data={taskStats} />
-              </Paper>
-            </motion.div>
-          </Grid> */}
-      {/* </Grid> */}
       
-
-      {/* <Modal open={openModal} onClose={() => setOpenModal(false)}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
-            p: 4,
-            borderRadius: 2,
-            boxShadow: 24,
-            minWidth: 400,
-          }}
-        >
-          <Typography variant="h6" mb={2}>
-            Assign Task for {selectedDate?.format("DD MMM YYYY")}
-          </Typography>
-          <TextField
-            fullWidth
-            label="Task Title"
-            value={taskTitle}
-            onChange={(e) => setTaskTitle(e.target.value)}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            select
-            fullWidth
-            label="Assign To"
-            value={assignedTo}
-            onChange={(e) => setAssignedTo(e.target.value)}
-            sx={{ mb: 2 }}
-          >
-            {users.map((u, i) => (
-              <MenuItem key={i} value={u.name}>
-                {u.name}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            select
-            fullWidth
-            label="Status"
-            value={taskStatus}
-            onChange={(e) => setTaskStatus(e.target.value)}
-            sx={{ mb: 2 }}
-          >
-            <MenuItem value="Pending">Pending</MenuItem>
-            <MenuItem value="Completed">Completed</MenuItem>
-          </TextField>
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            onClick={handleTaskSubmit}
-            disabled={!taskTitle || !assignedTo}
-          >
-            Save Task
-          </Button>
-        </Box>
-      </Modal> */}
-
+    {
+      <AssignTask
+      assignTask={assignTask}
+      setAssignTask={setAssignTask}
+      />
+    }
     </Box>
+    
   );
 };
 

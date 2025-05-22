@@ -140,7 +140,7 @@ export const DataTable = ({
   };
 
   return (
-    <Paper sx={{ height: 558 }} id={id} name={name}>
+    <Paper sx={{ height: "80vh" }} id={id} name={name}>
       <DataGrid
         id={id}
         name={name}

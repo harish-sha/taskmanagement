@@ -140,14 +140,14 @@ const UserProfile = ({ profileDialogOpen, setProfileDialogOpen, userData }) => {
         size="small"
       >
         <svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="20"
-  height="20"
-  fill="currentColor"
-  viewBox="0 0 24 24"
->
-  <path d="M12 9a3 3 0 100 6 3 3 0 000-6zm0-7c-.5 0-1 .3-1.3.8L9.2 5H5c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2h-4.2l-1.5-2.2C13 2.3 12.5 2 12 2zm0 12c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z"/>
-</svg>
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            >
+            <path d="M12 9a3 3 0 100 6 3 3 0 000-6zm0-7c-.5 0-1 .3-1.3.8L9.2 5H5c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2h-4.2l-1.5-2.2C13 2.3 12.5 2 12 2zm0 12c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z"/>
+        </svg>
 
       </IconButton>
     </label>
@@ -155,26 +155,7 @@ const UserProfile = ({ profileDialogOpen, setProfileDialogOpen, userData }) => {
             )}
           </Box>
 
-          {editMode ? (
-            <>
-              <TextField
-                label="Username"
-                name="username"
-                fullWidth
-                margin="normal"
-                value={formData.username}
-                onChange={handleChange}
-              />
-              <TextField
-                label="Email"
-                name="email"
-                fullWidth
-                margin="normal"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </>
-          ) : (
+          
             <>
               <Typography variant="h5" fontWeight={700} gutterBottom>
                 {user.username}
@@ -192,8 +173,7 @@ const UserProfile = ({ profileDialogOpen, setProfileDialogOpen, userData }) => {
                 <EmailIcon fontSize="small" /> {user.email || "john@email.com"}
               </Typography>
             </>
-          )}
-
+            
           <Divider sx={{ my: 3 }} />
 
           <Grid container spacing={3} justifyContent="center">

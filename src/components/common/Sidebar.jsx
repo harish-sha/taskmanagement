@@ -172,7 +172,7 @@ const Sidebar = ({ role = "admin" }) => {
     <>
       <motion.nav
         layout
-        className={`sticky top-0 left-0 h-screen z-50 shrink-0 border-r border-slate-300 bg-white p-2 `}
+        className={`md:sticky top-0 left-0 h-screen z-50 shrink-0 border-r border-slate-300 bg-white p-2 flex flex-col fixed`}
         style={{
           width: open ? "225px" : "fit-content",
         }}

@@ -12,6 +12,7 @@ import CreateUser from '../../components/UserModel/CreateUser';
 import AssignTask from '../../components/UserModel/AssignTask';
 import RenderHistory from '../../components/Miscellaneous/RenderHistory';
 import toast from 'react-hot-toast';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Tasks = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -30,6 +31,7 @@ const Tasks = () => {
     const [imageCaptions, setImageCaptions] = useState([]);
     const [openCreateUser, setOpenCreateUser] = useState(false)
     const [assignTask, setAssignTask] = useState(false)
+    const [taskHistory, setTaskHistory] = useState([])
     
 
     const handleImageChange = (e) => {
@@ -255,7 +257,22 @@ const Tasks = () => {
               open={editDrawerOpen}
               onClose={() => setEditDrawerOpen(false)}
             >
-              <Box className="p-4 w-[45rem]">
+              <Box p={4} className="md:w-[45rem] lg:w-[60rem] w-screen">
+                {/* Close Button */}
+                <IconButton
+                  onClick={() => setEditDrawerOpen(false)}
+                  sx={{
+                    position: 'absolute',
+                    top: 20,
+                    right: 8,
+                    color: 'gray',
+                    zIndex: 1500,
+                  }}
+                  aria-label="close drawer"
+                  size="large"
+                >
+            <CloseIcon fontSize="inherit" />
+          </IconButton>
                 <Typography
                   variant="h6"
                   sx={{ mb: 2, fontWeight: "600", color: "#333" }}
@@ -403,19 +420,18 @@ const Tasks = () => {
         <div className='text-2xl font-semibold flex justify-between items-center mb-4 '>
             <h1>Manage Tasks</h1>
             <div className='flex gap-2'>
-            <Button onClick={()=>setAssignTask(true)}>Assign Task </Button>
-            <Button
+            <UniversalButton 
+            label="Assign Task"
+            onClick={()=>setAssignTask(true)}
+            type='submit'
+            variant='primary'
+            />
+            <UniversalButton
+              label="Delete All Tasks"
               onClick={handleDeleteAllTasks}
-              sx={{
-                backgroundColor: "#d32f2f", // red[700]
-                color: "#fff",
-                "&:hover": {
-                  backgroundColor: "#b71c1c", // darker red
-                },
-              }}
-            >
-              Delete All Tasks
-            </Button>
+              type='submit'
+              variant='danger'
+            />
             </div>
         </div>
 
@@ -433,11 +449,13 @@ const Tasks = () => {
         </div>
 
         {/* {renderHistoryDrawer()} */}
+        
         {<RenderHistory 
         dummyHistory={dummyHistory}
         drawerOpen={drawerOpen}
         setDrawerOpen={setDrawerOpen}
-        />}
+        />
+        }
 
 
         {renderEditDrawer()}
