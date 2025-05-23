@@ -26,6 +26,7 @@ const UserLayout = () => {
                 sx={{
                     flexGrow: 1,
                     padding: '16px',
+                     ml: { xs: '48px', sm: 0 },
                     backgroundColor: '#f9fafb',
                     overflowY: 'auto',
                 }}

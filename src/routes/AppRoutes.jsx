@@ -15,6 +15,8 @@ import Calendar from '../pages/Admin/Calendar';
 import Analytics from '../pages/Admin/Analytics';
 import ManagerTask from '../pages/Manager/ManagerTask';
 import ManagerCalendar from '../pages/Manager/ManagerCalendar';
+import Task from '../pages/User/Task';
+import UserCalendar from '../pages/User/UserCalendar';
 
 const AppRoutes = () => {
 
@@ -56,6 +58,9 @@ const AppRoutes = () => {
                 </PrivateRoute>
             }>
                 <Route index element={<UserDashboards />} />
+                  <Route path='dashboard' element={<UserDashboards />} />
+                <Route path='tasks' element={<Task />} />
+                <Route path='calendar' element={<UserCalendar />} />
             </Route>
 
             <Route path="/dummy" element={<Dummy />} />

@@ -72,7 +72,7 @@ const Calendar = () => {
         p: { xs: 1, sm: 2, md: 3 },
         boxSizing: "border-box",
         overflow: "hidden",
-        backgroundColor: theme.palette.background.default,
+        // backgroundColor: theme.palette.background.default,
       }}
     >
       <Grid container sx={{ height: "100%" }}>

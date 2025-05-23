@@ -13,6 +13,7 @@ import AssignTask from '../../components/UserModel/AssignTask';
 import RenderHistory from '../../components/Miscellaneous/RenderHistory';
 import toast from 'react-hot-toast';
 import CloseIcon from '@mui/icons-material/Close';
+import { PiMicrosoftExcelLogo } from "react-icons/pi";
 
 const Tasks = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -31,15 +32,28 @@ const Tasks = () => {
     const [imageCaptions, setImageCaptions] = useState([]);
     const [openCreateUser, setOpenCreateUser] = useState(false)
     const [assignTask, setAssignTask] = useState(false)
-    const [taskHistory, setTaskHistory] = useState([])
-    
+    const [taskHistory, setTaskHistory] = useState([])  
 
-    const handleImageChange = (e) => {
-    const files = e.target.files;
-    if (files) {
-      setImageUpload([...imageUpload, ...files]);
-    }
-  };
+const [uploadedFiles, setUploadedFiles] = useState([]);
+
+  //   const handleImageChange = (e) => {
+  //   const files = e.target.files;
+  //   if (files) {
+  //     setImageUpload([...imageUpload, ...files]);
+  //   }
+  // };
+
+  const handleImageChange = (e) => {
+  const files = e.target.files;
+  if (files) {
+    const newFiles = Array.from(files).map(file => ({
+      file,
+      type: file.type,
+      name: file.name
+    }));
+    setUploadedFiles([...uploadedFiles, ...newFiles]);
+  }
+};
 
   const handleCaptionChange = (index, value) => {
     const newCaptions = [...imageCaptions];
@@ -47,15 +61,27 @@ const Tasks = () => {
     setImageCaptions(newCaptions);
   };
 
-  const handleDeleteImage = (index) => {
-    const newImages = [...imageUpload];
-    newImages.splice(index, 1);
-    setImageUpload(newImages);
+  // const handleDeleteImage = (index) => {
+  //   const newImages = [...imageUpload];
+  //   newImages.splice(index, 1);
+  //   setImageUpload(newImages);
 
-    const newCaptions = [...imageCaptions];
-    newCaptions.splice(index, 1);
-    setImageCaptions(newCaptions);
-  };
+  //   const newCaptions = [...imageCaptions];
+  //   newCaptions.splice(index, 1);
+  //   setImageCaptions(newCaptions);
+  // };
+
+
+const handleDeleteFile = (index) => {
+  const newFiles = [...uploadedFiles];
+  newFiles.splice(index, 1);
+  setUploadedFiles(newFiles);
+
+  const newCaptions = [...imageCaptions];
+  newCaptions.splice(index, 1);
+  setImageCaptions(newCaptions);
+};
+
 
   const handleDeleteTask = () => {
     toast.success("You have deleted the task")
@@ -83,34 +109,63 @@ const Tasks = () => {
         toast.success("All tasks deleted 😮")
       }
     
-      const handleReportIssue = () => {
-        const newIssue = {
-          taskId: selectedRow.id,
-          issue: issueText,
-          reportedBy: "User",
-          status: "Open",
-          reportedAt: new Date().toLocaleString(),
-          images: imageUpload,
-          captions: imageCaptions,
-        };
+      // const handleReportIssue = () => {
+      //   const newIssue = {
+      //     taskId: selectedRow.id,
+      //     issue: issueText,
+      //     reportedBy: "User",
+      //     status: "Open",
+      //     reportedAt: new Date().toLocaleString(),
+      //     images: imageUpload,
+      //     captions: imageCaptions,
+      //   };
     
-        setTaskHistory((prevHistory) => [
-          ...prevHistory,
-          {
-            taskId: taskIdForIssue,
-            action: `Issue reported: ${issueText}`,
-            image: imageUpload,
-            date: new Date().toLocaleString(),
-          },
-        ]);
+      //   setTaskHistory((prevHistory) => [
+      //     ...prevHistory,
+      //     {
+      //       taskId: taskIdForIssue,
+      //       action: `Issue reported: ${issueText}`,
+      //       image: imageUpload,
+      //       date: new Date().toLocaleString(),
+      //     },
+      //   ]);
     
-        setIssueText("");
-        setImageUpload([]);
-        setImageCaptions([]);
-        setEditDrawerOpen(false);
-        toast.success("Issue reported successfully!");
-      };
+      //   setIssueText("");
+      //   setImageUpload([]);
+      //   setImageCaptions([]);
+      //   setEditDrawerOpen(false);
+      //   toast.success("Issue reported successfully!");
+      // };
 
+
+const handleReportIssue = () => {
+  const newIssue = {
+    taskId: selectedRow.id,
+    issue: issueText,
+    reportedBy: "User",
+    status: "Open",
+    reportedAt: new Date().toLocaleString(),
+    files: uploadedFiles,
+    captions: imageCaptions,
+  };
+
+  setTaskHistory((prevHistory) => [
+    ...prevHistory,
+    {
+      taskId: taskIdForIssue,
+      action: `Issue reported: ${issueText}`,
+      files: uploadedFiles,
+      date: new Date().toLocaleString(),
+    },
+  ]);
+
+  setIssueText("");
+  setUploadedFiles([]);
+  setImageCaptions([]);
+  setEditDrawerOpen(false);
+  toast.success("Issue reported successfully!");
+};
+      
       const TaskColumns = [
           { field: "sn", headerName: "S.No", flex: 0, minWidth: 80 },
           { field: "task", headerName: "Tasks", flex: 1, minWidth: 120 },
@@ -353,7 +408,7 @@ const Tasks = () => {
                     gap: 2,
                   }}
                 >
-                  {imageUpload.length > 0 &&
+                  {/* {imageUpload.length > 0 &&
                     imageUpload.map((image, index) => (
                       <Box
                         key={index}
@@ -398,7 +453,63 @@ const Tasks = () => {
                           <DeleteIcon />
                         </IconButton>
                       </Box>
-                    ))}
+                    ))} */}
+
+                    {uploadedFiles.length > 0 &&
+  uploadedFiles.map((fileData, index) => (
+    <Box
+      key={index}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "8px",
+        borderRadius: "8px",
+        backgroundColor: "#fff",
+        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+      }}
+    >
+      {fileData.type.startsWith('image/') ? (
+        // Image preview
+        <img
+          src={URL.createObjectURL(fileData.file)}
+          alt={`Preview ${index + 1}`}
+          style={{
+            maxWidth: "150px",
+            height: "auto",
+            marginRight: "12px",
+            borderRadius: "4px",
+          }}
+        />
+      ) : (
+        // Excel file preview
+        <div className="flex items-center flex-col gap-2" style={{ marginRight: "12px" }}>
+          <PiMicrosoftExcelLogo size={40} color="#217346" />
+          <span className="text-sm text-green-700  font-semibold">{fileData.name}</span>
+        </div>
+      )}
+      <Box flex={1}>
+        <TextField
+          label={`Caption`}
+          value={imageCaptions[index]}
+          onChange={(e) => handleCaptionChange(index, e.target.value)}
+          fullWidth
+          variant="outlined"
+          sx={{
+            borderRadius: "4px",
+            backgroundColor: "#f8f8f8",
+            mb: 1,
+          }}
+        />
+      </Box>
+      <IconButton
+        onClick={() => handleDeleteFile(index)}
+        sx={{ color: "red" }}
+      >
+        <DeleteIcon />
+      </IconButton>
+    </Box>
+  ))}
                 </Box>
         
                 <div className="flex items-center justify-center" >

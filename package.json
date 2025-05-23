@@ -27,6 +27,7 @@
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "framer-motion": "^12.5.0",
+    "lottie-react": "^2.4.1",
     "primereact": "^10.9.3",
     "react": "^19.0.0",
     "react-calendar": "^5.1.0",

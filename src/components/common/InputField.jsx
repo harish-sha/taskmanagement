@@ -16,7 +16,8 @@ const InputField = ({
     tooltipPlacement = "top",
     readOnly = false,
     style,
-    maxLength
+    maxLength 
+    
 }) => {
     // const handleChange = (e) => {
     //     let inputValue = e.target.value;

@@ -390,59 +390,58 @@ const ManagerDashboard = () => {
   borderRadius={3}
   boxShadow={3}
 >
-  <div className="flex items-center justify-center gap-4">
-            <div className="w-20 h-20 mx-auto hidden md:block">
-              <lottie-player
-                autoplay
-                loop
-                mode="normal"
-                src="/animation/handwave.json"
-                // src="https://assets3.lottiefiles.com/packages/lf20_0yfsb3a1.json"
-                style={{ width: "100%", height: "100%" }}
-              ></lottie-player>
-            </div>
-            <div className="flex">
-              <div>
-              <h1 className="md:text-2xl text-lg font-semibold text-gray-700 flex items-center justify-center mb-4">
-                Welcome back, "Manager"
-              </h1>
-              <h2 className="md:text-lg text-sm text-gray-500">
-                Here's what's happening with your workspace today.
-              </h2>
-              </div>
-              <div className="relative block md:hidden">
-                <Tooltip title="Notifications" arrow>
-                  <IconButton
-                    onClick={handleOpenNotification}
-                    className="relative"
-                  >
-                    <NotificationsIcon sx={{ color: "#6366f1", fontSize: "24px" }} />
-
-                    {/* Notification Badge */}
-                    <div className="absolute top-1 right-1">
-                      <div className="text-xs bg-red-400 text-white rounded-full h- w-4 flex items-center justify-center">
-                        1
-                      </div>
-                    </div>
-                  </IconButton>
-                </Tooltip>
-              </div>
-            </div>
-          </div>
-          <div className="hidden md:block">
-          <Tooltip title="Notifications" arrow>
-            <IconButton onClick={handleOpenNotification} className="flex gap-2" >
-              <NotificationsIcon sx={{ color: "#6366f1", fontSize: "30px" }} />
-              <div className="absolute top-0 right-1">
-                <div className="text-xs bg-red-400 text-white rounded-full h-5 w-5 text-center flex items-center justify-center" >
-                  1
-                </div>
-                {/* <Badge value="2"></Badge> */}
-              </div>
-            </IconButton>
-          </Tooltip>
-          </div>
-  
+ <div className="flex items-center justify-center gap-4">
+             <div className="w-20 h-20 mx-auto hidden md:block">
+               <lottie-player
+                 autoplay
+                 loop
+                 mode="normal"
+                 src="/animation/handwave.json"
+                 // src="https://assets3.lottiefiles.com/packages/lf20_0yfsb3a1.json"
+                 style={{ width: "100%", height: "100%" }}
+               ></lottie-player>
+             </div>
+             <div className="flex">
+               <div>
+               <h1 className="md:text-2xl text-lg font-semibold text-gray-700 flex items-center justify-center mb-4">
+                 Welcome back, "Manager"
+               </h1>
+               <h2 className="md:text-lg text-sm text-gray-500">
+                 Here's what's happening with your workspace today.
+               </h2>
+               </div>
+               <div className="relative block md:hidden">
+                 <Tooltip title="Notifications" arrow>
+                   <IconButton
+                     onClick={handleOpenNotification}
+                     className="relative"
+                   >
+                     <NotificationsIcon sx={{ color: "#6366f1", fontSize: "24px" }} />
+ 
+                     {/* Notification Badge */}
+                     <div className="absolute top-1 right-1">
+                       <div className="text-xs bg-red-400 text-white rounded-full h- w-4 flex items-center justify-center">
+                         1
+                       </div>
+                     </div>
+                   </IconButton>
+                 </Tooltip>
+               </div>
+             </div>
+           </div>
+           <div className="hidden md:block">
+           <Tooltip title="Notifications" arrow>
+             <IconButton onClick={handleOpenNotification} className="flex gap-2" >
+               <NotificationsIcon sx={{ color: "#6366f1", fontSize: "30px" }} />
+               <div className="absolute top-0 right-1">
+                 <div className="text-xs bg-red-400 text-white rounded-full h-5 w-5 text-center flex items-center justify-center" >
+                   1
+                 </div>
+                 {/* <Badge value="2"></Badge> */}
+               </div>
+             </IconButton>
+           </Tooltip>
+           </div>
 </Box>
 
       </motion.div>

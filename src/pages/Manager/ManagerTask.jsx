@@ -26,7 +26,7 @@ import AnimatedDropdown from "../../components/common/AnimatedDropdown";
 import InputField from "../../components/common/InputField";
 import { Calendar } from "primereact/calendar";
 import CloseIcon from '@mui/icons-material/Close';
-
+import { PiMicrosoftExcelLogo } from "react-icons/pi";
 
 const ManagerTask = () => {
   const [taskDialogOpen, setTaskDialogOpen] = useState(false);
@@ -37,7 +37,7 @@ const ManagerTask = () => {
   const [imageUpload, setImageUpload] = useState([]);
   const [issueText, setIssueText] = useState("");
     const [imageCaptions, setImageCaptions] = useState([]);
-
+const [uploadedFiles, setUploadedFiles] = useState([]);
 
 
   // New state for tasks
@@ -179,12 +179,25 @@ const ManagerTask = () => {
       }
 
 
-    const handleImageChange = (e) => {
-    const files = e.target.files;
-    if (files) {
-      setImageUpload([...imageUpload, ...files]);
-    }
-  };
+  //   const handleImageChange = (e) => {
+  //   const files = e.target.files;
+  //   if (files) {
+  //     setImageUpload([...imageUpload, ...files]);
+  //   }
+  // };
+
+
+const handleImageChange = (e) => {
+  const files = e.target.files;
+  if (files) {
+    const newFiles = Array.from(files).map(file => ({
+      file,
+      type: file.type,
+      name: file.name
+    }));
+    setUploadedFiles([...uploadedFiles, ...newFiles]);
+  }
+};
 
 
   const handleCaptionChange = (index, value) => {
@@ -194,15 +207,26 @@ const ManagerTask = () => {
   };
 
 
-  const handleDeleteImage = (index) => {
-    const newImages = [...imageUpload];
-    newImages.splice(index, 1);
-    setImageUpload(newImages);
+  // const handleDeleteImage = (index) => {
+  //   const newImages = [...imageUpload];
+  //   newImages.splice(index, 1);
+  //   setImageUpload(newImages);
 
-    const newCaptions = [...imageCaptions];
-    newCaptions.splice(index, 1);
-    setImageCaptions(newCaptions);
-  };
+  //   const newCaptions = [...imageCaptions];
+  //   newCaptions.splice(index, 1);
+  //   setImageCaptions(newCaptions);
+  // };
+
+const handleDeleteFile = (index) => {
+  const newFiles = [...uploadedFiles];
+  newFiles.splice(index, 1);
+  setUploadedFiles(newFiles);
+
+  const newCaptions = [...imageCaptions];
+  newCaptions.splice(index, 1);
+  setImageCaptions(newCaptions);
+};
+
 
   // const rows = [
   //   {
@@ -458,33 +482,11 @@ const ManagerTask = () => {
             hidden
             onChange={(e) => handleImageChange(e)}
             multiple
+            accept="image/*,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.xls,.xlsx"
           />
         </Button>
 
-        {/* Display Image Previews and Captions */}
-        {/* {imageUpload.length > 0 &&
-            imageUpload.map((image, index) => (
-              <Box key={index} display="flex" alignItems="center" mb={2}>
-                <img
-                  src={URL.createObjectURL(image)}
-                  alt={`Preview ${index + 1}`}
-                  style={{ maxWidth: "100px", marginRight: "10px" }}
-                />
-                <Box flex={1}>
-                  <TextField
-                    label={`Image ${index + 1} Caption`}
-                    value={imageCaptions[index]}
-                    onChange={(e) => handleCaptionChange(index, e.target.value)}
-                    fullWidth
-                    variant="outlined"
-                    sx={{ mb: 1 }}
-                  />
-                </Box>
-                <IconButton onClick={() => handleDeleteImage(index)}>
-                  <DeleteIcon sx={{ color: "red" }} />
-                </IconButton>
-              </Box>
-            ))} */}
+      
 
         <Box
           sx={{
@@ -495,7 +497,7 @@ const ManagerTask = () => {
             gap: 2,
           }}
         >
-          {imageUpload.length > 0 &&
+          {/* {imageUpload.length > 0 &&
             imageUpload.map((image, index) => (
               <Box
                 key={index}
@@ -521,7 +523,7 @@ const ManagerTask = () => {
                 />
                 <Box flex={1}>
                   <TextField
-                    label={`Image ${index + 1} Caption`}
+                    label={`Caption`}
                     value={imageCaptions[index]}
                     onChange={(e) => handleCaptionChange(index, e.target.value)}
                     fullWidth
@@ -540,7 +542,63 @@ const ManagerTask = () => {
                   <DeleteIcon />
                 </IconButton>
               </Box>
-            ))}
+            ))} */}
+
+            {uploadedFiles.length > 0 &&
+  uploadedFiles.map((fileData, index) => (
+    <Box
+      key={index}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "8px",
+        borderRadius: "8px",
+        backgroundColor: "#fff",
+        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+      }}
+    >
+      {fileData.type.startsWith('image/') ? (
+        // Image preview
+        <img
+          src={URL.createObjectURL(fileData.file)}
+          alt={`Preview ${index + 1}`}
+          style={{
+            maxWidth: "150px",
+            height: "auto",
+            marginRight: "12px",
+            borderRadius: "4px",
+          }}
+        />
+      ) : (
+        // Excel file preview
+        <div className="flex items-center flex-col gap-2" style={{ marginRight: "12px" }}>
+          <PiMicrosoftExcelLogo size={40} color="#217346" />
+          <span className="text-sm text-green-700 font-semibold">{fileData.name}</span>
+        </div>
+      )}
+      <Box flex={1}>
+        <TextField
+          label={`Caption`}
+          value={imageCaptions[index]}
+          onChange={(e) => handleCaptionChange(index, e.target.value)}
+          fullWidth
+          variant="outlined"
+          sx={{
+            borderRadius: "4px",
+            backgroundColor: "#f8f8f8",
+            mb: 1,
+          }}
+        />
+      </Box>
+      <IconButton
+        onClick={() => handleDeleteFile(index)}
+        sx={{ color: "red" }}
+      >
+        <DeleteIcon />
+      </IconButton>
+    </Box>
+  ))}
         </Box>
 
         <div className="flex items-center justify-center">
@@ -558,33 +616,64 @@ const ManagerTask = () => {
     setEditDrawerOpen(true);
   };
 
-  const handleReportIssue = () => {
-    const newIssue = {
-      taskId: selectedRow.id,
-      issue: issueText,
-      reportedBy: "User",
-      status: "Open",
-      reportedAt: new Date().toLocaleString(),
-      images: imageUpload,
-      captions: imageCaptions,
-    };
+  // const handleReportIssue = () => {
+  //   const newIssue = {
+  //     taskId: selectedRow.id,
+  //     issue: issueText,
+  //     reportedBy: "User",
+  //     status: "Open",
+  //     reportedAt: new Date().toLocaleString(),
+  //     images: imageUpload,
+  //     captions: imageCaptions,
+  //   };
 
-    setTaskHistory((prevHistory) => [
-      ...prevHistory,
-      {
-        taskId: taskIdForIssue,
-        action: `Issue reported: ${issueText}`,
-        image: imageUpload,
-        date: new Date().toLocaleString(),
-      },
-    ]);
+  //   setTaskHistory((prevHistory) => [
+  //     ...prevHistory,
+  //     {
+  //       taskId: taskIdForIssue,
+  //       action: `Issue reported: ${issueText}`,
+  //       image: imageUpload,
+  //       date: new Date().toLocaleString(),
+  //     },
+  //   ]);
 
-    setIssueText("");
-    setImageUpload([]);
-    setImageCaptions([]);
-    setEditDrawerOpen(false);
-    toast.success("Issue reported successfully!");
+  //   setIssueText("");
+  //   setImageUpload([]);
+  //   setImageCaptions([]);
+  //   setEditDrawerOpen(false);
+  //   toast.success("Issue reported successfully!");
+  // };
+
+
+
+const handleReportIssue = () => {
+  const newIssue = {
+    taskId: selectedRow.id,
+    issue: issueText,
+    reportedBy: "User",
+    status: "Open",
+    reportedAt: new Date().toLocaleString(),
+    files: uploadedFiles,
+    captions: imageCaptions,
   };
+
+  setTaskHistory((prevHistory) => [
+    ...prevHistory,
+    {
+      taskId: taskIdForIssue,
+      action: `Issue reported: ${issueText}`,
+      files: uploadedFiles,
+      date: new Date().toLocaleString(),
+    },
+  ]);
+
+  setIssueText("");
+  setUploadedFiles([]);
+  setImageCaptions([]);
+  setEditDrawerOpen(false);
+  toast.success("Issue reported successfully!");
+};
+
 
   return (
     <>
@@ -613,6 +702,7 @@ const ManagerTask = () => {
         onHide={() => setTaskDialogOpen(false)} // Close the dialog
         header="Assign New Task"
         style={{ width: "500px" }}
+        draggable={false}
       >
         <div className="space-y-2 ">
     
