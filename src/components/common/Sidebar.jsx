@@ -112,7 +112,7 @@
 
 // export default Sidebar;
 
-import { useState , useEffect} from "react";
+import { useState } from "react";
 import {
   FiBarChart,
   FiChevronDown,
@@ -155,7 +155,7 @@ const Sidebar = ({ role = "admin" }) => {
 
   const navItems = [
     { label: "Dashboard", icon: FiHome, roles: ["admin", "manager"], route: "dashboard" },
-    { label: "Tasks", icon: FiTag, roles: ["admin", "manager", "user"], route: "task" },
+    { label: "Tasks", icon: FiTag, roles: ["admin", "manager", "user"], route: "tasks" },
     { label: "Calendar", icon: FiMonitor, roles: ["admin", "manager", "user"], route: "calendar" },
     { label: "Users", icon: FiUsers, roles: ["admin"], route: "/admin/manageroles" },
     { label: "Analytics", icon: FiBarChart, roles: ["admin"], route: "/admin/analytics" },
@@ -173,6 +173,8 @@ const Sidebar = ({ role = "admin" }) => {
     //     { label: "Product Categories", route: "/products/categories" },
     //   ],
     // },
+    
+    
   ];
 
   return (
@@ -192,12 +194,21 @@ const Sidebar = ({ role = "admin" }) => {
 //         }}
 
 
-        className={`fixed md:relative top-0 left-0 h-screen z-[1000] shrink-0 border-r border-slate-300 bg-white p-2`}
+        // className={`fixed md:relative top-0 left-0 h-screen z-[1000] shrink-0 border-r border-slate-300 bg-white p-2`}
+        // style={{
+        //   width: open ? "225px" : "60px",
+        //   // transform: "none",  
+        //   minWidth: "60px",
+        // }} 
+
+         className={`md:sticky top-0 left-0 h-screen z-50 shrink-0 border-r border-slate-300 bg-white p-2 flex flex-col fixed`}
+
+
         style={{
-          width: open ? "225px" : "60px",
-          // transform: "none",  
-          minWidth: "60px",
-        }} 
+
+          width: open ? "225px" : "fit-content",
+
+        }}
       >
 
      

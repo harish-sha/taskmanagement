@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+
+/* Hide scrollbar but keep scrolling functional */
+.invisible-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+
+.invisible-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* Add this to your global CSS or a CSS module */
+
+@media (max-width: 600px) {
+  .fc .fc-button {
+    font-size: 8px !important;
+    padding: 2px 6px !important;
+  }
+
+  .fc-toolbar-title {
+    font-size: 14px !important;
+  }
+}

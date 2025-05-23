@@ -27,6 +27,7 @@ const AdminLayout = () => {
                     padding: '16px',
                     backgroundColor: '#f9fafb',
                     overflowY: 'auto',
+                     ml: { xs: '48px', sm: 0 },
                 }}
             >
                 <Outlet />

@@ -1,5 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import UniversalButton from '../common/UniversalButton';
+import InputField from '../common/InputField';
+import AnimatedDropdown from '../common/AnimatedDropdown';
+import CloseIcon from '@mui/icons-material/Close';
+import { IconButton } from "@mui/material";
 
 const CreateUser = ({ setOpenCreateUser, openCreateUser }) => {
   const [formData, setFormData] = useState({
@@ -41,6 +46,13 @@ const CreateUser = ({ setOpenCreateUser, openCreateUser }) => {
     }
   };
 
+  const handleDropdownChange = (name, selectedValue) => {
+  setFormData((prev) => ({
+    ...prev,
+    [name]: selectedValue === "no-selection" ? "" : selectedValue,
+  }));
+  };
+
   const userFormRef = useRef()
 
   useEffect(() => {
@@ -61,105 +73,98 @@ const CreateUser = ({ setOpenCreateUser, openCreateUser }) => {
     <>
       {openCreateUser && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800/10 bg-opacity-50 z-50">
-          <div ref={userFormRef} className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
-            <h2 className="text-2xl font-semibold text-center mb-6">Create New User</h2>
-
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+            <div className='flex justify-between items-center'>
+            <h2 className="text-2xl font-semibold text-center">Create New User</h2>
+            <IconButton
+              onClick={() => setOpenCreateUser(false)}
+              sx={{
+                color: 'gray',
+              }}
+              aria-label="close drawer"
+              size="large"
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+            </div>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                  Username
-                </label>
-                <input
+                <InputField
+                  label="Username"
                   type="text"
                   id="username"
                   name="username"
+                  placeholder='Enter username'
                   value={formData.username}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                 />
                 {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
               </div>
 
               <div className="mb-4">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email Address
-                </label>
-                <input
+                <InputField
+                  label="Email"
                   type="email"
                   id="email"
+                  placeholder='Enter email'
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                 />
                 {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
               </div>
 
               <div className="mb-4">
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Password
-                </label>
-                <input
+                <InputField
                   type="password"
                   id="password"
                   name="password"
+                  label="Password"
+                  placeholder='password'
                   value={formData.password}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                 />
                 {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
               </div>
 
               <div className="mb-6">
-                <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                    Role
-                </label>
-                <select
-                    id="role"
-                    name="role"
-                    value={formData.role}
-                    onChange={handleChange}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                >
-                    <option value="">Select Role</option>
-                    <option value="manager">Manager</option>
-                    <option value="user">User</option>
-                </select>
+                <AnimatedDropdown
+                id="role"
+                name="role"
+                label="Role"
+                value={formData.role}
+                placeholder="Select Role"
+                options={[
+                  { label: "Manager", value: "manager" },
+                  { label: "User", value: "user" },
+                ]}
+                onChange={handleDropdownChange}
+              />
                 {errors.role && <p className="text-red-500 text-sm">{errors.role}</p>}
               </div>
 
-              <div className="mb-6">
-                <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                    Assigned to
-                </label>
-                <select
-                    id="assignedTo"
-                    name="assignedTo"
-                    value={formData.assignedTo}
-                    onChange={handleChange}
-                    className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                >
-                    <option value="">Assigned To</option>
-                    <option value="manager 1">Manager 1</option>
-                    <option value="manager 2">Manager 2</option>
-                </select>
-                {errors.role && <p className="text-red-500 text-sm">{errors.role}</p>}
-                </div>
+              <div className="mb-4">
+              <AnimatedDropdown
+                id="assignedTo"
+                name="assignedTo"
+                label="Assigned to"
+                value={formData.assignedTo}
+                placeholder="Select Assigned to..."
+                options={[
+                  { label: "manager 1", value: "manager 1" },
+                  { label: "manager 1", value: "manager 1" },
+                ]}
+                onChange={handleDropdownChange}
+              />
+              {errors.priority && <p className="text-red-500 text-sm">{errors.priority}</p>}
+            </div>
 
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={() => setOpenCreateUser(false)}
-                  className="text-gray-600 hover:text-gray-800"
-                >
-                  Cancel
-                </button>
-                <button
+              <div className="flex justify-center items-center">
+                <UniversalButton
+                  label="Create User"
                   type="submit"
-                  className="bg-blue-500 text-white hover:bg-blue-700 px-4 py-2 rounded-md"
-                >
-                  Create User
-                </button>
+                  variant="primary"
+                />
               </div>
             </form>
           </div>

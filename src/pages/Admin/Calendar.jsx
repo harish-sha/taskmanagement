@@ -1,3 +1,4 @@
+import React, {useState} from "react";
 import {
   Box,
   Grid,
@@ -17,25 +18,51 @@ import { motion } from "framer-motion";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import dayjs from "dayjs";
+import toast from 'react-hot-toast';
 
-const Calendar = ({
-  filter,
-  setFilter,
-  filteredEvents,
-  handleDateClick,
-  openModal,
-  setOpenModal,
-  selectedDate,
-  reminderTitle,
-  setReminderTitle,
-  reminderDesc,
-  setReminderDesc,
-  reminderStatus,
-  setReminderStatus,
-  handleTaskSubmit,
-}) => {
+
+
+const Calendar = () => {
   const theme = useTheme();
-  const isXs = useMediaQuery(theme.breakpoints.down("sm"));
+  const isXs = useMediaQuery(theme.breakpoints.down("sm")); // small screen check
+  const isMd = useMediaQuery(theme.breakpoints.between("sm", "md"));
+
+  const [filter, setFilter] = useState("All");
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [reminderTitle, setReminderTitle] = useState("");
+  const [reminderDesc, setReminderDesc] = useState("");
+  const [reminderStatus, setReminderStatus] = useState("Pending");
+  
+
+  const users = [
+    { name: "Alice" },
+    { name: "Bob" },
+    { name: "Charlie" },
+  ];
+
+  const allEvents = [
+    { title: "Meeting with Bob", date: "2025-05-21", status: "Pending" },
+    { title: "Project Review", date: "2025-05-22", status: "Completed" },
+  ];
+
+  const filteredEvents =
+    filter === "All"
+      ? allEvents
+      : allEvents.filter((event) => event.status === filter);
+
+  const handleDateClick = (info) => {
+    setSelectedDate(dayjs(info.date));   
+    setOpenModal(true);
+  };
+
+  const handleTaskSubmit = () => {
+    setOpenModal(false);
+    setReminderTitle("");
+    setReminderDesc("");
+    toast.success("Reminder set successfully 🤗")
+  };
 
   return (
     <Box
@@ -91,8 +118,8 @@ const Calendar = ({
                     size={isXs ? "small" : "medium"}
                   >
                     <MenuItem value="All">All</MenuItem>
-                    <MenuItem value="Pending">Pending</MenuItem>
-                    <MenuItem value="Completed">Completed</MenuItem>
+                    <MenuItem value="Pending">Normal</MenuItem>
+                    <MenuItem value="Completed">Urgent</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
@@ -106,16 +133,14 @@ const Calendar = ({
               >
                 <FullCalendar
                   plugins={[dayGridPlugin, interactionPlugin]}
-                  initialView={isXs ? "dayGridWeek" : "dayGridMonth"}
+                  initialView={isXs ? "dayGridDay" : "dayGridMonth"} // only day or month view
                   dateClick={handleDateClick}
                   events={filteredEvents}
                   height="100%"
                   headerToolbar={{
                     left: "prev,next today",
                     center: "title",
-                    right: isXs
-                      ? "dayGridWeek,dayGridDay"
-                      : "dayGridMonth,dayGridWeek",
+                    right: "dayGridDay,dayGridMonth", // only day and month buttons
                   }}
                 />
               </Box>

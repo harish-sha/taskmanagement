@@ -588,8 +588,10 @@ const ManagerTask = () => {
 
   return (
     <>
-      <h1 className="text-center font-bold text-2xl">Tasks</h1>
-      <div className="flex justify-center md:justify-end  gap-2 mt-2">
+
+    <div className="flex justify-between items-center">
+      <h1 className="font-bold text-2xl">Tasks</h1>
+      <div className="flex justify-center md:justify-end  gap-2 ">
         <UniversalButton
         label="+ New Task"
           onClick={() => setTaskDialogOpen(true)}
@@ -604,14 +606,15 @@ const ManagerTask = () => {
           variant="danger"
         />
       </div>
+</div>
 
       <Dialog
         visible={taskDialogOpen}
         onHide={() => setTaskDialogOpen(false)} // Close the dialog
-        header="Create Task"
+        header="Assign New Task"
         style={{ width: "500px" }}
       >
-        <div className="space-y-4 mt-3">
+        <div className="space-y-2 ">
     
            <InputField
     id="taskId"
@@ -622,7 +625,10 @@ const ManagerTask = () => {
     label="Task"
   />
          
-
+  <div className="mb-2">
+              <label htmlFor="assignedDate" className="block text-sm font-medium text-gray-700 mb-2">
+                Assigned Date
+               </label>
          <Calendar
     value={newTask.assignedDate}
     onChange={(e) =>
@@ -634,8 +640,13 @@ const ManagerTask = () => {
     placeholder="Assigned Date"
     style={{ width: "100%", marginBottom: "16px" , height:"2.3rem" }}
   />
+</div>
 
 
+ <div className="mb-2">
+              <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 mb-2">
+                Due Date
+                </label>
            <Calendar
     value={newTask.dueDate}
     onChange={(e) =>
@@ -647,7 +658,7 @@ const ManagerTask = () => {
     placeholder="Due Date"
     style={{ width: "100%", marginBottom: "16px" , height:"2.3rem"}}
   />
-
+</div>
           <FormControl fullWidth sx={{ mb: 2 }}>
            
 
@@ -687,12 +698,12 @@ const ManagerTask = () => {
           </FormControl>
          
            <div className=" flex items-center justify-center">
-              <UniversalButton label="Save" onClick={handleSaveTask} />
+              <UniversalButton label="Assign Task" onClick={handleSaveTask} />
               </div>
         </div>
       </Dialog>
 
-      <div className="mt-4">
+      <div className="mt-8">
         <DataTable
           id="taskHistorytableManager"
           name="taskHistorytableManager"

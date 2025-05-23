@@ -45,7 +45,7 @@ const AppRoutes = () => {
             } >
                 <Route index element={<ManagerDashboard />} />
                 <Route path='dashboard' element={<ManagerDashboard />} />
-                <Route path='task' element={<ManagerTask />} />
+                <Route path='tasks' element={<ManagerTask />} />
                 <Route path='calendar' element={<ManagerCalendar />} />
             </Route>
 

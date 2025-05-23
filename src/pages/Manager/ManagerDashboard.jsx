@@ -26,6 +26,8 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { Calendar } from "primereact/calendar";
 
+
+
 // import { DatePicker } from "@mui/x-date-pickers";
 
 // import UniversalDatePicker from "../../components/common/UniversalDatePicker";
@@ -73,7 +75,7 @@ const ManagerDashboard = () => {
       toast.error("Please fill all fields!");
       return;
     }
-    // You can add logic to save the task to your backend or state here
+   
     setTaskDialogOpen(false);
     setNewTask({
       task: "",
@@ -375,61 +377,7 @@ const ManagerDashboard = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-      >
-        {/* <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          mb={5}
-          px={4}
-          py={3}
-          bgcolor="#ffffff"
-          borderRadius={3}
-          boxShadow={3}
-        >
-          <div className=" flex md:items-center md:justify-center gap-4">
-            <div className="w-20 h-20 mx-auto hidden md:block lg:block">
-              <lottie-player
-                autoplay
-                loop
-                mode="normal"
-                src="/animation/handwave.json"
-                style={{ width: "100%", height: "100%" }}
-              ></lottie-player>
-            </div>
-            <div className="">
-              <h1 className="text-sm md:text-2xl font-semibold text-gray-700 flex items-center justify-center mb-4">
-                Welcome back, "Manager"
-              </h1>
-              <h2 className="text-sm md:text-lg text-gray-500">
-                Here's what's happening with your workspace today.
-              </h2>
-            </div>
-          </div>
-          <div className="bg-amber-300">
-           <Tooltip title="Notifications" arrow>
-            <div className="block md:hidden lg:hidden  ml-4">
-            <IconButton onClick={handleOpenNotification} className="flex gap-2 ">
-              <NotificationsIcon sx={{ color: "#ff0000", fontSize: "30px" }} />
-              <div className="absolute -top-3 right-0">
-                <Badge value="4"></Badge>
-              </div>
-            </IconButton>
-            </div>
-          </Tooltip>
-          </div>
-          <Tooltip title="Notifications" arrow>
-            <div className="hidden md:block lg:block">
-            <IconButton onClick={handleOpenNotification} className="flex gap-2 ">
-              <NotificationsIcon sx={{ color: "#6366f1", fontSize: "30px" }} />
-              <div className="absolute -top-3 right-0">
-                <Badge value="2"></Badge>
-              </div>
-            </IconButton>
-            </div>
-          </Tooltip>
-        </Box> */}
-
+      >     
 
         <Box
   display="flex"
@@ -442,53 +390,59 @@ const ManagerDashboard = () => {
   borderRadius={3}
   boxShadow={3}
 >
-  <div className="flex items-start md:items-center justify-between w-full gap-4">
-    {/* Left Section: Animation (visible only on md+) */}
-    <div className="hidden md:block w-20 h-20">
-      <lottie-player
-        autoplay
-        loop
-        mode="normal"
-        src="/animation/handwave.json"
-        style={{ width: "100%", height: "100%" }}
-      ></lottie-player>
-    </div>
+  <div className="flex items-center justify-center gap-4">
+            <div className="w-20 h-20 mx-auto hidden md:block">
+              <lottie-player
+                autoplay
+                loop
+                mode="normal"
+                src="/animation/handwave.json"
+                // src="https://assets3.lottiefiles.com/packages/lf20_0yfsb3a1.json"
+                style={{ width: "100%", height: "100%" }}
+              ></lottie-player>
+            </div>
+            <div className="flex">
+              <div>
+              <h1 className="md:text-2xl text-lg font-semibold text-gray-700 flex items-center justify-center mb-4">
+                Welcome back, "Manager"
+              </h1>
+              <h2 className="md:text-lg text-sm text-gray-500">
+                Here's what's happening with your workspace today.
+              </h2>
+              </div>
+              <div className="relative block md:hidden">
+                <Tooltip title="Notifications" arrow>
+                  <IconButton
+                    onClick={handleOpenNotification}
+                    className="relative"
+                  >
+                    <NotificationsIcon sx={{ color: "#6366f1", fontSize: "24px" }} />
 
-    {/* Middle Section: Welcome Text */}
-    <div className="flex-1">
-      <div className="flex items-center justify-between">
-        <h1 className="text-sm md:text-2xl font-semibold text-gray-700">
-          Welcome back, "Manager"
-        </h1>
-       
-        <div className="md:hidden relative">
+                    {/* Notification Badge */}
+                    <div className="absolute top-1 right-1">
+                      <div className="text-xs bg-red-400 text-white rounded-full h- w-4 flex items-center justify-center">
+                        1
+                      </div>
+                    </div>
+                  </IconButton>
+                </Tooltip>
+              </div>
+            </div>
+          </div>
+          <div className="hidden md:block">
           <Tooltip title="Notifications" arrow>
-            <IconButton onClick={handleOpenNotification}>
-              <NotificationsIcon sx={{ color: "#6366f1", fontSize: "26px" }} />
-              <div className="absolute -top-3.5 -right-0.5   rounded-full ">
-                <Badge value="2"  />
+            <IconButton onClick={handleOpenNotification} className="flex gap-2" >
+              <NotificationsIcon sx={{ color: "#6366f1", fontSize: "30px" }} />
+              <div className="absolute top-0 right-1">
+                <div className="text-xs bg-red-400 text-white rounded-full h-5 w-5 text-center flex items-center justify-center" >
+                  1
+                </div>
+                {/* <Badge value="2"></Badge> */}
               </div>
             </IconButton>
           </Tooltip>
-        </div>
-      </div>
-      <h2 className="text-sm md:text-lg text-gray-500 mt-2">
-        Here's what's happening with your workspace today.
-      </h2>
-    </div>
-
-    {/* Right Section: Notifications Icon for md and up */}
-    <div className="hidden md:block relative">
-      <Tooltip title="Notifications" arrow>
-        <IconButton onClick={handleOpenNotification}>
-          <NotificationsIcon sx={{ color: "#6366f1", fontSize: "30px" }} />
-          <div className="absolute -top-3 -right-0.5">
-            <Badge value="2" />
           </div>
-        </IconButton>
-      </Tooltip>
-    </div>
-  </div>
+  
 </Box>
 
       </motion.div>
@@ -518,10 +472,11 @@ const ManagerDashboard = () => {
       <Dialog
         visible={taskDialogOpen}
         onHide={() => setTaskDialogOpen(false)}
-        header="Create Task"
+        header="Assign New Task"
         style={{ width: "500px" }}
+        draggable={false}
       >
-        <div className="space-y-4 mt-3">
+        <div className="space-y-2 ">
           <InputField
             id="taskId"
             name="task"
@@ -530,7 +485,11 @@ const ManagerDashboard = () => {
             placeholder="Task"
             label="Task"
           />
-
+          
+           <div className="mb-2">
+              <label htmlFor="assignedDate" className="block text-sm font-medium text-gray-700 mb-2">
+                Assigned Date
+               </label>
           <Calendar
             value={newTask.assignedDate}
             onChange={(e) =>
@@ -543,7 +502,13 @@ const ManagerDashboard = () => {
             placeholder="Assigned date"
             label="Assigned date"
           />
+         </div>
 
+
+           <div className="mb-2">
+              <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 mb-2">
+                Due Date
+                </label>
           <Calendar
             value={newTask.dueDate}
             onChange={(e) =>
@@ -555,6 +520,7 @@ const ManagerDashboard = () => {
             style={{ width: "100%", marginBottom: "16px", height: "2.3rem" }}
             placeholder="Due date"
           />
+         </div>
 
           <FormControl fullWidth sx={{ mb: 2 }}>
             <AnimatedDropdown
@@ -590,7 +556,7 @@ const ManagerDashboard = () => {
             />
           </FormControl>
           <div className=" flex items-center justify-center">
-            <UniversalButton label="Save" onClick={handleSaveTask} />
+            <UniversalButton label="Assign Task" onClick={handleSaveTask} />
           </div>
         </div>
       </Dialog>
