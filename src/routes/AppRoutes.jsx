@@ -9,6 +9,7 @@ import UserDashboards from '../pages/User/UserDashboards';
 import Roles from '../pages/Admin/Roles';
 import Dummy from '../dummy/Dummy';
 import PrivateRoute from '../auth/PrivateRoute';
+<<<<<<< HEAD
 import Task from '../pages/User/Task';
 import Calendar from '../pages/User/Calendar';
 
@@ -23,10 +24,20 @@ import AdminCalendar from '../pages/Admin/Calendar';
 
 
 
+=======
+import { useAuth } from '../context/AuthContext';
+import Tasks from '../pages/Admin/Tasks';
+import Calendar from '../pages/Admin/Calendar';
+import Analytics from '../pages/Admin/Analytics';
+import ManagerTask from '../pages/Manager/ManagerTask';
+import ManagerCalendar from '../pages/Manager/ManagerCalendar';
+>>>>>>> b329bc2a140d79e250597ca0a9c6822bd7448ede
 
 const AppRoutes = () => {
+
     return (
         <Routes>
+            <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
 
             {/* Admin */}
@@ -36,10 +47,17 @@ const AppRoutes = () => {
                 </PrivateRoute>
             }>
                 <Route index element={<AdminDashboard />} />
+                <Route path="dashboard" element={<AdminDashboard />} />
                 <Route path="manageroles" element={<Roles />} />
+<<<<<<< HEAD
                 <Route path='tasks' element={<AdminTask />} />
                 <Route path='calendar' element={<AdminCalendar />} />
                 <Route path='analytics' element={<Analystics />} />
+=======
+                <Route path="tasks" element={<Tasks />} />
+                <Route path="calendar" element={<Calendar />} />
+                <Route path="analytics" element={<Analytics />} />
+>>>>>>> b329bc2a140d79e250597ca0a9c6822bd7448ede
             </Route>
 
             {/* Manager */}
@@ -47,9 +65,14 @@ const AppRoutes = () => {
                 <PrivateRoute role="manager">
                     <ManagerLayout />
                 </PrivateRoute>
-            }>
+            } >
                 <Route index element={<ManagerDashboard />} />
+<<<<<<< HEAD
                 <Route path='tasks' element={<ManagerTask />} />
+=======
+                <Route path='dashboard' element={<ManagerDashboard />} />
+                <Route path='task' element={<ManagerTask />} />
+>>>>>>> b329bc2a140d79e250597ca0a9c6822bd7448ede
                 <Route path='calendar' element={<ManagerCalendar />} />
             </Route>
 

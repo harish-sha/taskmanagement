@@ -132,39 +132,48 @@ import { Dialog } from "primereact/dialog";
 import { Box, Typography, Button } from "@mui/material";
 import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext";
+import UserProfile from "../Miscellaneous/UserProfile";
 
 
-const Sidebar = ({ role = "admin", user = { username: "Admin", role: "admin" } }) => {
+const Sidebar = ({ role = "admin" }) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
   const [profileDialogOpen, setProfileDialogOpen] = useState(false);
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const handleLogout = () => {
     logout();
     toast.success("You have successfully logged out!");
   };
 
   const navItems = [
+<<<<<<< HEAD
     { label: "Dashboard", icon: FiHome, roles: ["admin", "manager"], route: "/dashboard" },
     { label: "Tasks", icon: FiTag, roles: ["admin", "manager", "user"], route: "tasks" },
     { label: "Calendar", icon: FiMonitor, roles: ["admin", "manager", "user"], route: "calendar" },
     { label: "Users", icon: FiUsers, roles: ["admin"], route: "/admin/manageroles" },
     { label: "Analytics", icon: FiBarChart, roles: ["admin"], route: "analytics" },
+=======
+    { label: "Dashboard", icon: FiHome, roles: ["admin", "manager"], route: "dashboard" },
+    { label: "Tasks", icon: FiTag, roles: ["admin", "manager", "user"], route: "tasks" },
+    { label: "Calendar", icon: FiMonitor, roles: ["admin", "manager", "user"], route: "calendar" },
+    { label: "Users", icon: FiUsers, roles: ["admin"], route: "/admin/manageroles" },
+    { label: "Analytics", icon: FiBarChart, roles: ["admin"], route: "/admin/analytics" },
+>>>>>>> b329bc2a140d79e250597ca0a9c6822bd7448ede
     {
       label: "Logout", icon: FiLogOut, roles: ["admin", "manager", "user"],
       onClick: handleLogout
     },
-    {
-      label: "Products",
-      icon: FiShoppingCart,
-      roles: ["admin", "manager"],
-      dropdownItems: [
-        { label: "Add Product", route: "/products/add" },
-        { label: "Manage Products", route: "/products/manage" },
-        { label: "Product Categories", route: "/products/categories" },
-      ],
-    },
+    // {
+    //   label: "Products",
+    //   icon: FiShoppingCart,
+    //   roles: ["admin", "manager"],
+    //   dropdownItems: [
+    //     { label: "Add Product", route: "/products/add" },
+    //     { label: "Manage Products", route: "/products/manage" },
+    //     { label: "Product Categories", route: "/products/categories" },
+    //   ],
+    // },
   ];
 
   return (
@@ -205,7 +214,7 @@ const Sidebar = ({ role = "admin", user = { username: "Admin", role: "admin" } }
         </div>
       </motion.nav>
 
-      <Dialog
+      {/* <Dialog
         visible={profileDialogOpen}
         onHide={() => setProfileDialogOpen(false)} // Close the dialog
         header="Profile"
@@ -219,7 +228,12 @@ const Sidebar = ({ role = "admin", user = { username: "Admin", role: "admin" } }
             <strong>Role:</strong> {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
           </Typography>
         </Box>
-      </Dialog>
+      </Dialog> */}
+      <UserProfile
+      profileDialogOpen={profileDialogOpen}
+      setProfileDialogOpen={setProfileDialogOpen}
+      userData={user}
+      />
     </>
 
   );
