@@ -202,8 +202,8 @@ import UniversalButton from '../../components/common/UniversalButton';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import Lottie from 'lottie-react'
-import loginAnimation from "../../../public/animation/loginAnimation.json"
-import boxAnimation from "../../../public/animation/boxanimate.json"
+import loginAnimation from "../../assets/animation/loginAnimation.json"
+import boxAnimation from "../../assets/animation/boxanimate.json"
 
 
 import toast from 'react-hot-toast';
