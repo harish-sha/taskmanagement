@@ -187,15 +187,42 @@ const [uploadedFiles, setUploadedFiles] = useState([]);
   // };
 
 
+const isValidFileType = (file) => {
+  // Valid image types
+  const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+  
+  // Valid Excel types
+  const validExcelTypes = [
+    'application/vnd.ms-excel', // .xls
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+    'application/excel'
+  ];
+
+  return validImageTypes.includes(file.type) || validExcelTypes.includes(file.type);
+};
+
+
 const handleImageChange = (e) => {
-  const files = e.target.files;
-  if (files) {
-    const newFiles = Array.from(files).map(file => ({
+  const files = Array.from(e.target.files);
+  
+  // Filter out invalid file types
+  const validFiles = files.filter(file => isValidFileType(file));
+  const invalidFiles = files.filter(file => !isValidFileType(file));
+  
+  // Show error message if there are invalid files
+  // if (invalidFiles.length > 0) {
+  //   toast.error('Only image and Excel files are allowed');
+  //   return;
+  // }
+
+  if (validFiles.length > 0) {
+    const newFiles = validFiles.map(file => ({
       file,
       type: file.type,
       name: file.name
     }));
     setUploadedFiles([...uploadedFiles, ...newFiles]);
+    setImageCaptions([...imageCaptions, ...Array(validFiles.length).fill("")]);
   }
 };
 
@@ -459,7 +486,7 @@ const handleDeleteFile = (index) => {
         />
 
         {/* Image Upload */}
-        <Button
+        {/* <Button
           variant="outlined"
           color="primary"
           component="label"
@@ -484,122 +511,105 @@ const handleDeleteFile = (index) => {
             multiple
             accept="image/*,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.xls,.xlsx"
           />
-        </Button>
+        </Button> */}
 
+
+<Button
+  variant="outlined"
+  color="primary"
+  component="label"
+  startIcon={<AddPhotoAlternateIcon />}
+  sx={{
+    mb: 2,
+    textTransform: "none",
+    padding: "8px 16px",
+    borderRadius: "8px",
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    border: "1px solid #ccc",
+    "&:hover": { backgroundColor: "#e8e8e8" },
+  }}
+>
+  Upload Attachments
+  <input
+    type="file"
+    hidden
+    onChange={(e) => handleImageChange(e)}
+    multiple
+    accept=".jpg,.jpeg,.png,.xls,.xlsx,image/jpeg,image/png,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  />
+</Button>
       
 
-        <Box
-          sx={{
-            display: "grid",
-            // gridTemplateColumns: "repeat(2, fr)",
-            maxHeight: "600px",
-            overflowY: "auto",
-            gap: 2,
-          }}
-        >
-          {/* {imageUpload.length > 0 &&
-            imageUpload.map((image, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "8px",
-                  borderRadius: "8px",
-                  backgroundColor: "#fff",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                }}
-              >
-                <img
-                  src={URL.createObjectURL(image)}
-                  alt={`Preview ${index + 1}`}
-                  style={{
-                    maxWidth: "150px",
-                    height: "auto",
-                    marginRight: "12px",
-                    borderRadius: "4px",
-                  }}
-                />
-                <Box flex={1}>
-                  <TextField
-                    label={`Caption`}
-                    value={imageCaptions[index]}
-                    onChange={(e) => handleCaptionChange(index, e.target.value)}
-                    fullWidth
-                    variant="outlined"
-                    sx={{
-                      borderRadius: "4px",
-                      backgroundColor: "#f8f8f8",
-                      mb: 1,
-                    }}
-                  />
-                </Box>
-                <IconButton
-                  onClick={() => handleDeleteImage(index)}
-                  sx={{ color: "red" }}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Box>
-            ))} */}
-
-            {uploadedFiles.length > 0 &&
-  uploadedFiles.map((fileData, index) => (
-    <Box
-      key={index}
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "8px",
-        borderRadius: "8px",
-        backgroundColor: "#fff",
-        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-      }}
-    >
-      {fileData.type.startsWith('image/') ? (
-        // Image preview
-        <img
-          src={URL.createObjectURL(fileData.file)}
-          alt={`Preview ${index + 1}`}
-          style={{
-            maxWidth: "150px",
-            height: "auto",
-            marginRight: "12px",
-            borderRadius: "4px",
-          }}
-        />
-      ) : (
-        // Excel file preview
-        <div className="flex items-center flex-col gap-2" style={{ marginRight: "12px" }}>
-          <PiMicrosoftExcelLogo size={40} color="#217346" />
-          <span className="text-sm text-green-700 font-semibold">{fileData.name}</span>
-        </div>
-      )}
-      <Box flex={1}>
-        <TextField
-          label={`Caption`}
-          value={imageCaptions[index]}
-          onChange={(e) => handleCaptionChange(index, e.target.value)}
-          fullWidth
-          variant="outlined"
-          sx={{
-            borderRadius: "4px",
-            backgroundColor: "#f8f8f8",
-            mb: 1,
-          }}
-        />
-      </Box>
-      <IconButton
-        onClick={() => handleDeleteFile(index)}
-        sx={{ color: "red" }}
+       <Box
+  sx={{
+    display: "grid",
+    maxHeight: "600px",
+    overflowY: "auto",
+    gap: 2,
+  }}
+>
+  {uploadedFiles.length > 0 &&
+    uploadedFiles.map((fileData, index) => (
+      <Box
+        key={index}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "8px",
+          borderRadius: "8px",
+          backgroundColor: "#fff",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+        }}
       >
-        <DeleteIcon />
-      </IconButton>
-    </Box>
-  ))}
+        {fileData.type.startsWith('image/') ? (
+          // Image preview
+          <img
+            src={URL.createObjectURL(fileData.file)}
+            alt={`Preview ${index + 1}`}
+            style={{
+              maxWidth: "150px",
+              height: "auto",
+              marginRight: "12px",
+              borderRadius: "4px",
+            }}
+          />
+        ) : (
+          // Excel file preview
+          <div className="flex items-center gap-2" style={{ marginRight: "12px" }}>
+            <PiMicrosoftExcelLogo size={40} color="#217346" />
+            <span className="text-sm text-gray-600">
+              {fileData.name}
+              <br />
+              <span className="text-xs text-gray-400">Excel Document</span>
+            </span>
+          </div>
+        )}
+        <Box flex={1}>
+          <TextField
+            label={`Caption`}
+            value={imageCaptions[index] || ''}
+            onChange={(e) => handleCaptionChange(index, e.target.value)}
+            fullWidth
+            variant="outlined"
+            sx={{
+              borderRadius: "4px",
+              backgroundColor: "#f8f8f8",
+              mb: 1,
+            }}
+          />
         </Box>
+        <IconButton
+          onClick={() => handleDeleteFile(index)}
+          sx={{ color: "red" }}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </Box>
+    ))}
+</Box>
 
         <div className="flex items-center justify-center">
           <UniversalButton onClick={handleReportIssue} label="Submit" />

@@ -21,6 +21,7 @@ import { motion } from "framer-motion";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Badge } from 'primereact/badge';
+import ActivityFeed from "../../components/common/ActivityFeed";
 
 
 import AnimatedStats from "../../components/common/AnimatedStats";
@@ -386,14 +387,21 @@ const UserDashboards = () => {
           </div>
         </Box>
       </motion.div>
-
+{/* 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-5">
         <div className="lg:col-span-3">
           <AnimatedStats />
         </div>
+        <ActivityFeed />
+      </div> */}
+
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="lg:col-span-2">
+          <AnimatedStats />
+        </div>
+        <ActivityFeed />
       </div>
 
-    
 
       {renderNotificationDrawer()}
     </Box>
